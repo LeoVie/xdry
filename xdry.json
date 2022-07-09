@@ -1,0 +1,24 @@
+{
+  "normalizers": [
+    {
+      "level": 1,
+      "extension": ".php",
+      "command": "php",
+      "args": [
+        "/home/ubuntu/development/x-dry-php-plugin/bin/console",
+        "normalize:level-1",
+        "%FILEPATH%"
+      ]
+    },
+    {
+      "level": 2,
+      "extension": ".php",
+      "command": "php",
+      "args": [
+        "/home/ubuntu/development/x-dry-php-plugin/bin/console",
+        "normalize:level-2",
+        "%FILEPATH%"
+      ]
+    }
+  ]
+}
