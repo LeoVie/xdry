@@ -9,7 +9,7 @@
       "extension": ".php",
       "command": "php",
       "args": [
-        "/home/ubuntu/development/x-dry-php-plugin/bin/console",
+        "%pwd%/../x-dry-php-plugin/bin/console",
         "normalize:level-1",
         "%FILEPATH%"
       ]
@@ -19,7 +19,7 @@
       "extension": ".php",
       "command": "php",
       "args": [
-        "/home/ubuntu/development/x-dry-php-plugin/bin/console",
+        "/home/ubuntu/projects/x-dry-php-plugin/bin/console",
         "normalize:level-2",
         "%FILEPATH%"
       ]
@@ -29,7 +29,7 @@
       "extension": ".js",
       "command": "node",
       "args": [
-        "/home/ubuntu/development/x-dry-javascript-plugin/index.js",
+        "/home/ubuntu/projects/x-dry-javascript-plugin/index.js",
         "normalize:level-1",
         "%FILEPATH%"
       ]
@@ -39,7 +39,7 @@
       "extension": ".js",
       "command": "node",
       "args": [
-        "/home/ubuntu/development/x-dry-javascript-plugin/index.js",
+        "/home/ubuntu/projects/x-dry-javascript-plugin/index.js",
         "normalize:level-2",
         "%FILEPATH%"
       ]

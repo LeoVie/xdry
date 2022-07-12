@@ -35,15 +35,12 @@ func ParseConfig(configPath string, cwd string) (error, *Config) {
 		return err, nil
 	}
 
-	err = hydrateDirectories(&config, configPath, cwd)
-	if err != nil {
-		return err, nil
-	}
+	hydrateDirectories(&config, configPath, cwd)
 
 	return nil, &config
 }
 
-func hydrateDirectories(config *Config, configPath string, cwd string) error {
+func hydrateDirectories(config *Config, configPath string, cwd string) {
 	configDir := path.Dir(configPath)
 
 	var hydratedDirectories []string
@@ -54,8 +51,6 @@ func hydrateDirectories(config *Config, configPath string, cwd string) error {
 		)
 	}
 	config.Directories = hydratedDirectories
-
-	return nil
 }
 
 func convertDirectoryToAbsolutePath(directory string, configDir string, cwd string) string {

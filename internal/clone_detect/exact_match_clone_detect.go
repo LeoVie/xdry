@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"sync"
+	"x-dry-go/internal/cli"
 	"x-dry-go/internal/compare"
 	"x-dry-go/internal/config"
 	"x-dry-go/internal/normalize"
@@ -117,7 +118,7 @@ func normalizeFiles(
 		go func(path string, normalizers []config.Normalizer) {
 			defer wg.Done()
 
-			err, normalizedFileContent := normalize.Normalize(path, normalizers)
+			err, normalizedFileContent := normalize.Normalize(path, normalizers, cli.NewCommandExecutor())
 
 			if err != nil {
 				fmt.Println(err)

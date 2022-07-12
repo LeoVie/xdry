@@ -2,28 +2,26 @@ package normalize
 
 import (
 	"fmt"
-	"os/exec"
 	"path/filepath"
 	"strings"
+	"x-dry-go/internal/cli"
 	"x-dry-go/internal/config"
 )
 
-func Normalize(path string, normalizers []config.Normalizer) (error, string) {
+func Normalize(path string, normalizers []config.Normalizer, commandExecutor cli.CommandExecutor) (error, string) {
 	err, normalizer := findNormalizeImplementation(path, normalizers)
 
 	if err != nil {
 		return err, ""
 	}
 
-	cmd := exec.Command(normalizer.Command, hydrateArgs(path, normalizer)...)
-
-	stdout, err := cmd.Output()
+	commandOutput, err := commandExecutor.Execute(normalizer.Command, hydrateArgs(path, normalizer))
 
 	if err != nil {
 		return err, ""
 	}
 
-	return nil, string(stdout)
+	return nil, commandOutput
 }
 
 func findNormalizeImplementation(
