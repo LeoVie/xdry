@@ -10,14 +10,14 @@ func FindLongestMatch(a string, b string) string {
 }
 
 func longestCommonSubstring(a string, b string) string {
-	bothStrings := []string{}
+	var bothStrings []string
 	if len(a) < len(b) {
 		bothStrings = []string{a, b}
 	} else {
 		bothStrings = []string{b, a}
 	}
 
-	longestCommonSubstring := []string{}
+	var longestCommonSubstring []string
 	shorterString := bothStrings[0]
 	longerString := bothStrings[1]
 

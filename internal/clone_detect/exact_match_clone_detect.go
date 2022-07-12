@@ -11,13 +11,13 @@ import (
 	"x-dry-go/internal/normalize"
 )
 
-type clone = struct {
+type Clone = struct {
 	A     string
 	B     string
 	Match string
 }
 
-func DetectInDirectory(directory string, level int, levelNormalizers map[int][]config.Normalizer) (error, map[string]clone) {
+func DetectInDirectory(directory string, level int, levelNormalizers map[int][]config.Normalizer) (error, map[string]Clone) {
 	var filepaths []string
 	err := filepath.Walk(directory,
 		func(path string, info os.FileInfo, err error) error {
@@ -30,7 +30,7 @@ func DetectInDirectory(directory string, level int, levelNormalizers map[int][]c
 			return nil
 		})
 	if err != nil {
-		return err, map[string]clone{}
+		return err, map[string]Clone{}
 	}
 
 	normalizedFileContents := normalizeFiles(
@@ -43,10 +43,10 @@ func DetectInDirectory(directory string, level int, levelNormalizers map[int][]c
 	return nil, clones
 }
 
-func detectClones(normalizedFileContents map[string]string) map[string]clone {
+func detectClones(normalizedFileContents map[string]string) map[string]Clone {
 	var (
 		clonesMutex sync.Mutex
-		clones      = make(map[string]clone)
+		clones      = make(map[string]Clone)
 	)
 
 	var clonesWg sync.WaitGroup
@@ -81,7 +81,7 @@ func detectClones(normalizedFileContents map[string]string) map[string]clone {
 				}
 
 				clonesMutex.Lock()
-				clones[hash] = clone{
+				clones[hash] = Clone{
 					A:     first,
 					B:     second,
 					Match: longestMatch,

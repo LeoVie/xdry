@@ -15,12 +15,7 @@ func Normalize(path string, normalizers []config.Normalizer) (error, string) {
 		return err, ""
 	}
 
-	var replacedArgs []string
-	for _, arg := range normalizer.Args {
-		replacedArgs = append(replacedArgs, strings.ReplaceAll(arg, "%FILEPATH%", path))
-	}
-
-	cmd := exec.Command(normalizer.Command, replacedArgs...)
+	cmd := exec.Command(normalizer.Command, hydrateArgs(path, normalizer)...)
 
 	stdout, err := cmd.Output()
 
@@ -44,4 +39,13 @@ func findNormalizeImplementation(
 	}
 
 	return fmt.Errorf("no normalizer found for file extension '%s'", fileExtension), nil
+}
+
+func hydrateArgs(path string, normalizer *config.Normalizer) []string {
+	var hydratedArgs []string
+	for _, arg := range normalizer.Args {
+		hydratedArgs = append(hydratedArgs, strings.ReplaceAll(arg, "%FILEPATH%", path))
+	}
+
+	return hydratedArgs
 }

@@ -1,0 +1,16 @@
+{
+  "directories": [
+    "%pwd%/test/_testdata/php/",
+    "./test/_testdata/javascript/"
+  ],
+  "normalizers": [
+    {
+      "level": 1,
+      "extension": ".php",
+      "command": "php",
+      "args": [
+        "%FILEPATH%"
+      ]
+    }
+  ]
+}

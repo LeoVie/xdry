@@ -4,9 +4,12 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"os"
+	"path"
+	"strings"
 )
 
 type Config struct {
+	Directories []string     `json:"directories"`
 	Normalizers []Normalizer `json:"normalizers"`
 }
 
@@ -17,7 +20,7 @@ type Normalizer struct {
 	Args      []string `json:"args"`
 }
 
-func ParseConfig(configPath string) (error, *Config) {
+func ParseConfig(configPath string, cwd string) (error, *Config) {
 	jsonFile, err := os.Open(configPath)
 	if err != nil {
 		return err, nil
@@ -32,5 +35,37 @@ func ParseConfig(configPath string) (error, *Config) {
 		return err, nil
 	}
 
-	return err, &config
+	err = hydrateDirectories(&config, configPath, cwd)
+	if err != nil {
+		return err, nil
+	}
+
+	return nil, &config
+}
+
+func hydrateDirectories(config *Config, configPath string, cwd string) error {
+	configDir := path.Dir(configPath)
+
+	var hydratedDirectories []string
+	for _, directory := range config.Directories {
+		hydratedDirectories = append(
+			hydratedDirectories,
+			convertDirectoryToAbsolutePath(directory, configDir, cwd),
+		)
+	}
+	config.Directories = hydratedDirectories
+
+	return nil
+}
+
+func convertDirectoryToAbsolutePath(directory string, configDir string, cwd string) string {
+	if strings.HasPrefix(directory, "/") {
+		return directory
+	}
+
+	if strings.HasPrefix(directory, "%pwd%") {
+		return strings.ReplaceAll(directory, "%pwd%", cwd)
+	}
+
+	return configDir + string(os.PathSeparator) + directory
 }

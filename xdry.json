@@ -1,4 +1,8 @@
 {
+  "directories": [
+    "%pwd%/test/_testdata/php/",
+    "./test/_testdata/javascript/"
+  ],
   "normalizers": [
     {
       "level": 1,
@@ -16,6 +20,26 @@
       "command": "php",
       "args": [
         "/home/ubuntu/development/x-dry-php-plugin/bin/console",
+        "normalize:level-2",
+        "%FILEPATH%"
+      ]
+    },
+    {
+      "level": 1,
+      "extension": ".js",
+      "command": "node",
+      "args": [
+        "/home/ubuntu/development/x-dry-javascript-plugin/index.js",
+        "normalize:level-1",
+        "%FILEPATH%"
+      ]
+    },
+    {
+      "level": 2,
+      "extension": ".js",
+      "command": "node",
+      "args": [
+        "/home/ubuntu/development/x-dry-javascript-plugin/index.js",
         "normalize:level-2",
         "%FILEPATH%"
       ]
