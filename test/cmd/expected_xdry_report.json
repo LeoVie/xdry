@@ -49,24 +49,9 @@
       "B": "%PROJECT_PATH%/test/_testdata/php/bum.php",
       "Matches": [
         {
-          "Content": "$x = 10",
-          "IndexA": 0,
-          "IndexB": 0
-        },
-        {
-          "Content": " ; $",
-          "IndexA": 7,
-          "IndexB": 8
-        },
-        {
           "Content": " = 50 ; print ( $",
           "IndexA": 12,
           "IndexB": 13
-        },
-        {
-          "Content": " ) ;",
-          "IndexA": 30,
-          "IndexB": 31
         }
       ]
     },
@@ -86,19 +71,9 @@
       "B": "%PROJECT_PATH%/test/_testdata/php/bum.php",
       "Matches": [
         {
-          "Content": "$",
-          "IndexA": 0,
-          "IndexB": 0
-        },
-        {
           "Content": " = 50 ; print ( $",
           "IndexA": 2,
           "IndexB": 13
-        },
-        {
-          "Content": " ) ;",
-          "IndexA": 20,
-          "IndexB": 31
         }
       ]
     },
@@ -118,24 +93,9 @@
       "B": "%PROJECT_PATH%/test/_testdata/php/foo.php",
       "Matches": [
         {
-          "Content": "$x = 10",
-          "IndexA": 0,
-          "IndexB": 0
-        },
-        {
-          "Content": " ; $",
-          "IndexA": 8,
-          "IndexB": 7
-        },
-        {
           "Content": " = 50 ; print ( $",
           "IndexA": 13,
           "IndexB": 12
-        },
-        {
-          "Content": " ) ;",
-          "IndexA": 31,
-          "IndexB": 30
         }
       ]
     }
@@ -174,24 +134,82 @@
         }
       ]
     },
+    "%PROJECT_PATH%/test/_testdata/php/bar.php_%PROJECT_PATH%/test/_testdata/php/bum.php": {
+      "A": "%PROJECT_PATH%/test/_testdata/php/bar.php",
+      "B": "%PROJECT_PATH%/test/_testdata/php/bum.php",
+      "Matches": [
+        {
+          "Content": "$x0 = 1 ; $x1 = 1 ; print ( $x1 ) ;",
+          "IndexA": 0,
+          "IndexB": 0
+        }
+      ]
+    },
+    "%PROJECT_PATH%/test/_testdata/php/bar.php_%PROJECT_PATH%/test/_testdata/php/foo.php": {
+      "A": "%PROJECT_PATH%/test/_testdata/php/bar.php",
+      "B": "%PROJECT_PATH%/test/_testdata/php/foo.php",
+      "Matches": [
+        {
+          "Content": "$x0 = 1 ; $x1 = 1 ; print ( $x1 ) ;",
+          "IndexA": 0,
+          "IndexB": 0
+        }
+      ]
+    },
+    "%PROJECT_PATH%/test/_testdata/php/bum.php_%PROJECT_PATH%/test/_testdata/php/foo.php": {
+      "A": "%PROJECT_PATH%/test/_testdata/php/bum.php",
+      "B": "%PROJECT_PATH%/test/_testdata/php/foo.php",
+      "Matches": [
+        {
+          "Content": "$x0 = 1 ; $x1 = 1 ; print ( $x1 ) ;",
+          "IndexA": 0,
+          "IndexB": 0
+        }
+      ]
+    }
+  },
+  "TYPE 3": {
+    "%PROJECT_PATH%/test/_testdata/javascript/bar.js_%PROJECT_PATH%/test/_testdata/javascript/bla.js": {
+      "A": "%PROJECT_PATH%/test/_testdata/javascript/bar.js",
+      "B": "%PROJECT_PATH%/test/_testdata/javascript/bla.js",
+      "Matches": [
+        {
+          "Content": "const x = 1 ; \n x . x ( x ) ; \n",
+          "IndexA": 16,
+          "IndexB": 0
+        }
+      ]
+    },
+    "%PROJECT_PATH%/test/_testdata/javascript/bar.js_%PROJECT_PATH%/test/_testdata/javascript/foo.js": {
+      "A": "%PROJECT_PATH%/test/_testdata/javascript/bar.js",
+      "B": "%PROJECT_PATH%/test/_testdata/javascript/foo.js",
+      "Matches": [
+        {
+          "Content": "const x = 1 ; \n const x = 1 ; \n x . x ( x ) ; \n",
+          "IndexA": 0,
+          "IndexB": 0
+        }
+      ]
+    },
+    "%PROJECT_PATH%/test/_testdata/javascript/bla.js_%PROJECT_PATH%/test/_testdata/javascript/foo.js": {
+      "A": "%PROJECT_PATH%/test/_testdata/javascript/bla.js",
+      "B": "%PROJECT_PATH%/test/_testdata/javascript/foo.js",
+      "Matches": [
+        {
+          "Content": "const x = 1 ; \n x . x ( x ) ; \n",
+          "IndexA": 0,
+          "IndexB": 16
+        }
+      ]
+    },
     "%PROJECT_PATH%/test/_testdata/php/bar.php_%PROJECT_PATH%/test/_testdata/php/bla.php": {
       "A": "%PROJECT_PATH%/test/_testdata/php/bar.php",
       "B": "%PROJECT_PATH%/test/_testdata/php/bla.php",
       "Matches": [
         {
-          "Content": "$x0 = 1 ; ",
+          "Content": "$x0 = 1 ; print ( $x ) ;",
           "IndexA": 0,
           "IndexB": 0
-        },
-        {
-          "Content": "print ( $x",
-          "IndexA": 20,
-          "IndexB": 10
-        },
-        {
-          "Content": " ) ;",
-          "IndexA": 31,
-          "IndexB": 21
         }
       ]
     },
@@ -222,19 +240,9 @@
       "B": "%PROJECT_PATH%/test/_testdata/php/bum.php",
       "Matches": [
         {
-          "Content": "$x0 = 1 ; ",
+          "Content": "$x0 = 1 ; print ( $x ) ;",
           "IndexA": 0,
           "IndexB": 0
-        },
-        {
-          "Content": "print ( $x",
-          "IndexA": 10,
-          "IndexB": 20
-        },
-        {
-          "Content": " ) ;",
-          "IndexA": 21,
-          "IndexB": 31
         }
       ]
     },
@@ -243,19 +251,9 @@
       "B": "%PROJECT_PATH%/test/_testdata/php/foo.php",
       "Matches": [
         {
-          "Content": "$x0 = 1 ; ",
+          "Content": "$x0 = 1 ; print ( $x ) ;",
           "IndexA": 0,
           "IndexB": 0
-        },
-        {
-          "Content": "print ( $x",
-          "IndexA": 10,
-          "IndexB": 20
-        },
-        {
-          "Content": " ) ;",
-          "IndexA": 21,
-          "IndexB": 31
         }
       ]
     },
