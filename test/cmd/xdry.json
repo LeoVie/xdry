@@ -2,12 +2,12 @@
   "reports": [
     {
       "type": "json",
-      "path": "%pwd%/reports/xdry_report.json"
+      "path": "%pwd%/generated/reports/xdry_report.json"
     }
   ],
   "directories": [
-    "%pwd%/test/_testdata/php/",
-    "./test/_testdata/javascript/"
+    "%pwd%/../_testdata/php/",
+    "%pwd%/../_testdata/javascript/"
   ],
   "normalizers": [
     {

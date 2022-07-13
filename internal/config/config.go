@@ -9,8 +9,14 @@ import (
 )
 
 type Config struct {
+	Reports     []Report     `json:"reports"`
 	Directories []string     `json:"directories"`
 	Normalizers []Normalizer `json:"normalizers"`
+}
+
+type Report struct {
+	Type string `json:"type"`
+	Path string `json:"path"`
 }
 
 type Normalizer struct {
@@ -35,9 +41,26 @@ func ParseConfig(configPath string, cwd string) (error, *Config) {
 		return err, nil
 	}
 
+	hydrateReports(&config, configPath, cwd)
 	hydrateDirectories(&config, configPath, cwd)
 
 	return nil, &config
+}
+
+func hydrateReports(config *Config, configPath string, cwd string) {
+	configDir := path.Dir(configPath)
+
+	var hydratedReports []Report
+	for _, report := range config.Reports {
+		hydratedReports = append(
+			hydratedReports,
+			Report{
+				Type: report.Type,
+				Path: convertDirectoryToAbsolutePath(report.Path, configDir, cwd),
+			},
+		)
+	}
+	config.Reports = hydratedReports
 }
 
 func hydrateDirectories(config *Config, configPath string, cwd string) {
