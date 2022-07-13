@@ -50,7 +50,7 @@ func Analyze(out io.Writer, configPath string) int {
 	type1Clones := make(map[string]clone_detect.Clone)
 	type2Clones := make(map[string]clone_detect.Clone)
 	for _, directory := range configuration.Directories {
-		err, type1ClonesInDir := clone_detect.DetectInDirectory(directory, CommandFailure, levelNormalizers)
+		err, type1ClonesInDir := clone_detect.DetectInDirectory(directory, 1, levelNormalizers)
 		if err != nil {
 			fmt.Fprintln(out, err)
 
@@ -71,8 +71,8 @@ func Analyze(out io.Writer, configPath string) int {
 		}
 	}
 
-	relevantType1Clones := filterClonesByLength(type1Clones, 1)
-	relevantType2Clones := filterClonesByLength(type2Clones, 1)
+	relevantType1Clones := filterClonesByLength(type1Clones, configuration.Settings.MinCloneLengths["level-1"])
+	relevantType2Clones := filterClonesByLength(type2Clones, configuration.Settings.MinCloneLengths["level-2"])
 
 	clones := map[string]map[string]clone_detect.Clone{
 		"TYPE 1": relevantType1Clones,

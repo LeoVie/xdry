@@ -9,9 +9,14 @@ import (
 )
 
 type Config struct {
+	Settings    Settings     `json:"settings"`
 	Reports     []Report     `json:"reports"`
 	Directories []string     `json:"directories"`
 	Normalizers []Normalizer `json:"normalizers"`
+}
+
+type Settings struct {
+	MinCloneLengths map[string]int `json:"minCloneLengths"`
 }
 
 type Report struct {

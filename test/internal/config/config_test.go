@@ -18,6 +18,12 @@ func TestParseConfig(t *testing.T) {
 	configPath := path.Join(cwd, "xdry.json")
 
 	want := config.Config{
+		Settings: config.Settings{
+			MinCloneLengths: map[string]int{
+				"level-1": 10,
+				"level-2": 20,
+			},
+		},
 		Directories: []string{
 			path.Join(cwd, "test", "_testdata", "php"),
 			path.Join(cwd, ".", "test", "_testdata", "javascript"),
