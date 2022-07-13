@@ -85,5 +85,5 @@ func convertDirectoryToAbsolutePath(directory string, configDir string, cwd stri
 		return strings.ReplaceAll(directory, "%pwd%", cwd)
 	}
 
-	return configDir + string(os.PathSeparator) + directory
+	return path.Join(configDir, directory)
 }

@@ -1,7 +1,7 @@
 {
   "directories": [
-    "%pwd%/test/_testdata/php/",
-    "./test/_testdata/javascript/"
+    "%pwd%/test/_testdata/php",
+    "./test/_testdata/javascript"
   ],
   "normalizers": [
     {

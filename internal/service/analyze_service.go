@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"path"
 	"strings"
 	"x-dry-go/internal/clone_detect"
 	"x-dry-go/internal/compare"
@@ -106,7 +107,7 @@ func convertConfigPathToAbsolutePath(configPath string, cwd string) string {
 		return configPath
 	}
 
-	return cwd + string(os.PathSeparator) + configPath
+	return path.Join(cwd, configPath)
 }
 
 func filterClonesByLength(clones map[string]clone_detect.Clone, minLength int) map[string]clone_detect.Clone {

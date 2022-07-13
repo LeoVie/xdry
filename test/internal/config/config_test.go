@@ -4,6 +4,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"log"
 	"os"
+	"path"
 	"testing"
 	"x-dry-go/internal/config"
 )
@@ -14,12 +15,12 @@ func TestParseConfig(t *testing.T) {
 		log.Fatal(err)
 	}
 
-	configPath := cwd + string(os.PathSeparator) + "xdry.json"
+	configPath := path.Join(cwd, "xdry.json")
 
 	want := config.Config{
 		Directories: []string{
-			cwd + string(os.PathSeparator) + "test/_testdata/php/",
-			cwd + string(os.PathSeparator) + "./test/_testdata/javascript/",
+			path.Join(cwd, "test", "_testdata", "php"),
+			path.Join(cwd, ".", "test", "_testdata", "javascript"),
 		},
 		Normalizers: []config.Normalizer{
 			{

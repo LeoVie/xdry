@@ -1,8 +1,8 @@
 {
   "TYPE 1": {
-    "/home/ubuntu/projects/x-dry/test/_testdata/javascript/bar.js_/home/ubuntu/projects/x-dry/test/_testdata/javascript/bla.js": {
-      "A": "/home/ubuntu/projects/x-dry/test/_testdata/javascript/bar.js",
-      "B": "/home/ubuntu/projects/x-dry/test/_testdata/javascript/bla.js",
+    "%PROJECT_PATH%/test/_testdata/javascript/bar.js_%PROJECT_PATH%/test/_testdata/javascript/bla.js": {
+      "A": "%PROJECT_PATH%/test/_testdata/javascript/bar.js",
+      "B": "%PROJECT_PATH%/test/_testdata/javascript/bla.js",
       "Matches": [
         {
           "Content": "const y = 50 ; \n console . log ( y ) ; \n",
@@ -11,9 +11,9 @@
         }
       ]
     },
-    "/home/ubuntu/projects/x-dry/test/_testdata/javascript/bar.js_/home/ubuntu/projects/x-dry/test/_testdata/javascript/foo.js": {
-      "A": "/home/ubuntu/projects/x-dry/test/_testdata/javascript/bar.js",
-      "B": "/home/ubuntu/projects/x-dry/test/_testdata/javascript/foo.js",
+    "%PROJECT_PATH%/test/_testdata/javascript/bar.js_%PROJECT_PATH%/test/_testdata/javascript/foo.js": {
+      "A": "%PROJECT_PATH%/test/_testdata/javascript/bar.js",
+      "B": "%PROJECT_PATH%/test/_testdata/javascript/foo.js",
       "Matches": [
         {
           "Content": "const x = 10 ; \n const y = 50 ; \n console . log ( y ) ; \n",
@@ -22,9 +22,9 @@
         }
       ]
     },
-    "/home/ubuntu/projects/x-dry/test/_testdata/javascript/bla.js_/home/ubuntu/projects/x-dry/test/_testdata/javascript/foo.js": {
-      "A": "/home/ubuntu/projects/x-dry/test/_testdata/javascript/bla.js",
-      "B": "/home/ubuntu/projects/x-dry/test/_testdata/javascript/foo.js",
+    "%PROJECT_PATH%/test/_testdata/javascript/bla.js_%PROJECT_PATH%/test/_testdata/javascript/foo.js": {
+      "A": "%PROJECT_PATH%/test/_testdata/javascript/bla.js",
+      "B": "%PROJECT_PATH%/test/_testdata/javascript/foo.js",
       "Matches": [
         {
           "Content": "const y = 50 ; \n console . log ( y ) ; \n",
@@ -33,9 +33,9 @@
         }
       ]
     },
-    "/home/ubuntu/projects/x-dry/test/_testdata/php/bar.php_/home/ubuntu/projects/x-dry/test/_testdata/php/bla.php": {
-      "A": "/home/ubuntu/projects/x-dry/test/_testdata/php/bar.php",
-      "B": "/home/ubuntu/projects/x-dry/test/_testdata/php/bla.php",
+    "%PROJECT_PATH%/test/_testdata/php/bar.php_%PROJECT_PATH%/test/_testdata/php/bla.php": {
+      "A": "%PROJECT_PATH%/test/_testdata/php/bar.php",
+      "B": "%PROJECT_PATH%/test/_testdata/php/bla.php",
       "Matches": [
         {
           "Content": "$y = 50 ; print ( $y ) ;",
@@ -44,9 +44,9 @@
         }
       ]
     },
-    "/home/ubuntu/projects/x-dry/test/_testdata/php/bar.php_/home/ubuntu/projects/x-dry/test/_testdata/php/bum.php": {
-      "A": "/home/ubuntu/projects/x-dry/test/_testdata/php/bar.php",
-      "B": "/home/ubuntu/projects/x-dry/test/_testdata/php/bum.php",
+    "%PROJECT_PATH%/test/_testdata/php/bar.php_%PROJECT_PATH%/test/_testdata/php/bum.php": {
+      "A": "%PROJECT_PATH%/test/_testdata/php/bar.php",
+      "B": "%PROJECT_PATH%/test/_testdata/php/bum.php",
       "Matches": [
         {
           "Content": "$x = 10",
@@ -70,9 +70,9 @@
         }
       ]
     },
-    "/home/ubuntu/projects/x-dry/test/_testdata/php/bar.php_/home/ubuntu/projects/x-dry/test/_testdata/php/foo.php": {
-      "A": "/home/ubuntu/projects/x-dry/test/_testdata/php/bar.php",
-      "B": "/home/ubuntu/projects/x-dry/test/_testdata/php/foo.php",
+    "%PROJECT_PATH%/test/_testdata/php/bar.php_%PROJECT_PATH%/test/_testdata/php/foo.php": {
+      "A": "%PROJECT_PATH%/test/_testdata/php/bar.php",
+      "B": "%PROJECT_PATH%/test/_testdata/php/foo.php",
       "Matches": [
         {
           "Content": "$x = 10 ; $y = 50 ; print ( $y ) ;",
@@ -81,9 +81,9 @@
         }
       ]
     },
-    "/home/ubuntu/projects/x-dry/test/_testdata/php/bla.php_/home/ubuntu/projects/x-dry/test/_testdata/php/bum.php": {
-      "A": "/home/ubuntu/projects/x-dry/test/_testdata/php/bla.php",
-      "B": "/home/ubuntu/projects/x-dry/test/_testdata/php/bum.php",
+    "%PROJECT_PATH%/test/_testdata/php/bla.php_%PROJECT_PATH%/test/_testdata/php/bum.php": {
+      "A": "%PROJECT_PATH%/test/_testdata/php/bla.php",
+      "B": "%PROJECT_PATH%/test/_testdata/php/bum.php",
       "Matches": [
         {
           "Content": "$",
@@ -102,9 +102,9 @@
         }
       ]
     },
-    "/home/ubuntu/projects/x-dry/test/_testdata/php/bla.php_/home/ubuntu/projects/x-dry/test/_testdata/php/foo.php": {
-      "A": "/home/ubuntu/projects/x-dry/test/_testdata/php/bla.php",
-      "B": "/home/ubuntu/projects/x-dry/test/_testdata/php/foo.php",
+    "%PROJECT_PATH%/test/_testdata/php/bla.php_%PROJECT_PATH%/test/_testdata/php/foo.php": {
+      "A": "%PROJECT_PATH%/test/_testdata/php/bla.php",
+      "B": "%PROJECT_PATH%/test/_testdata/php/foo.php",
       "Matches": [
         {
           "Content": "$y = 50 ; print ( $y ) ;",
@@ -113,9 +113,9 @@
         }
       ]
     },
-    "/home/ubuntu/projects/x-dry/test/_testdata/php/bum.php_/home/ubuntu/projects/x-dry/test/_testdata/php/foo.php": {
-      "A": "/home/ubuntu/projects/x-dry/test/_testdata/php/bum.php",
-      "B": "/home/ubuntu/projects/x-dry/test/_testdata/php/foo.php",
+    "%PROJECT_PATH%/test/_testdata/php/bum.php_%PROJECT_PATH%/test/_testdata/php/foo.php": {
+      "A": "%PROJECT_PATH%/test/_testdata/php/bum.php",
+      "B": "%PROJECT_PATH%/test/_testdata/php/foo.php",
       "Matches": [
         {
           "Content": "$x = 10",
@@ -141,9 +141,9 @@
     }
   },
   "TYPE 2": {
-    "/home/ubuntu/projects/x-dry/test/_testdata/javascript/bar.js_/home/ubuntu/projects/x-dry/test/_testdata/javascript/bla.js": {
-      "A": "/home/ubuntu/projects/x-dry/test/_testdata/javascript/bar.js",
-      "B": "/home/ubuntu/projects/x-dry/test/_testdata/javascript/bla.js",
+    "%PROJECT_PATH%/test/_testdata/javascript/bar.js_%PROJECT_PATH%/test/_testdata/javascript/bla.js": {
+      "A": "%PROJECT_PATH%/test/_testdata/javascript/bar.js",
+      "B": "%PROJECT_PATH%/test/_testdata/javascript/bla.js",
       "Matches": [
         {
           "Content": "const x = 1 ; \n x . x ( x ) ; \n",
@@ -152,9 +152,9 @@
         }
       ]
     },
-    "/home/ubuntu/projects/x-dry/test/_testdata/javascript/bar.js_/home/ubuntu/projects/x-dry/test/_testdata/javascript/foo.js": {
-      "A": "/home/ubuntu/projects/x-dry/test/_testdata/javascript/bar.js",
-      "B": "/home/ubuntu/projects/x-dry/test/_testdata/javascript/foo.js",
+    "%PROJECT_PATH%/test/_testdata/javascript/bar.js_%PROJECT_PATH%/test/_testdata/javascript/foo.js": {
+      "A": "%PROJECT_PATH%/test/_testdata/javascript/bar.js",
+      "B": "%PROJECT_PATH%/test/_testdata/javascript/foo.js",
       "Matches": [
         {
           "Content": "const x = 1 ; \n const x = 1 ; \n x . x ( x ) ; \n",
@@ -163,9 +163,9 @@
         }
       ]
     },
-    "/home/ubuntu/projects/x-dry/test/_testdata/javascript/bla.js_/home/ubuntu/projects/x-dry/test/_testdata/javascript/foo.js": {
-      "A": "/home/ubuntu/projects/x-dry/test/_testdata/javascript/bla.js",
-      "B": "/home/ubuntu/projects/x-dry/test/_testdata/javascript/foo.js",
+    "%PROJECT_PATH%/test/_testdata/javascript/bla.js_%PROJECT_PATH%/test/_testdata/javascript/foo.js": {
+      "A": "%PROJECT_PATH%/test/_testdata/javascript/bla.js",
+      "B": "%PROJECT_PATH%/test/_testdata/javascript/foo.js",
       "Matches": [
         {
           "Content": "const x = 1 ; \n x . x ( x ) ; \n",
@@ -174,9 +174,9 @@
         }
       ]
     },
-    "/home/ubuntu/projects/x-dry/test/_testdata/php/bar.php_/home/ubuntu/projects/x-dry/test/_testdata/php/bla.php": {
-      "A": "/home/ubuntu/projects/x-dry/test/_testdata/php/bar.php",
-      "B": "/home/ubuntu/projects/x-dry/test/_testdata/php/bla.php",
+    "%PROJECT_PATH%/test/_testdata/php/bar.php_%PROJECT_PATH%/test/_testdata/php/bla.php": {
+      "A": "%PROJECT_PATH%/test/_testdata/php/bar.php",
+      "B": "%PROJECT_PATH%/test/_testdata/php/bla.php",
       "Matches": [
         {
           "Content": "$x0 = 1 ; ",
@@ -195,9 +195,9 @@
         }
       ]
     },
-    "/home/ubuntu/projects/x-dry/test/_testdata/php/bar.php_/home/ubuntu/projects/x-dry/test/_testdata/php/bum.php": {
-      "A": "/home/ubuntu/projects/x-dry/test/_testdata/php/bar.php",
-      "B": "/home/ubuntu/projects/x-dry/test/_testdata/php/bum.php",
+    "%PROJECT_PATH%/test/_testdata/php/bar.php_%PROJECT_PATH%/test/_testdata/php/bum.php": {
+      "A": "%PROJECT_PATH%/test/_testdata/php/bar.php",
+      "B": "%PROJECT_PATH%/test/_testdata/php/bum.php",
       "Matches": [
         {
           "Content": "$x0 = 1 ; $x1 = 1 ; print ( $x1 ) ;",
@@ -206,9 +206,9 @@
         }
       ]
     },
-    "/home/ubuntu/projects/x-dry/test/_testdata/php/bar.php_/home/ubuntu/projects/x-dry/test/_testdata/php/foo.php": {
-      "A": "/home/ubuntu/projects/x-dry/test/_testdata/php/bar.php",
-      "B": "/home/ubuntu/projects/x-dry/test/_testdata/php/foo.php",
+    "%PROJECT_PATH%/test/_testdata/php/bar.php_%PROJECT_PATH%/test/_testdata/php/foo.php": {
+      "A": "%PROJECT_PATH%/test/_testdata/php/bar.php",
+      "B": "%PROJECT_PATH%/test/_testdata/php/foo.php",
       "Matches": [
         {
           "Content": "$x0 = 1 ; $x1 = 1 ; print ( $x1 ) ;",
@@ -217,9 +217,9 @@
         }
       ]
     },
-    "/home/ubuntu/projects/x-dry/test/_testdata/php/bla.php_/home/ubuntu/projects/x-dry/test/_testdata/php/bum.php": {
-      "A": "/home/ubuntu/projects/x-dry/test/_testdata/php/bla.php",
-      "B": "/home/ubuntu/projects/x-dry/test/_testdata/php/bum.php",
+    "%PROJECT_PATH%/test/_testdata/php/bla.php_%PROJECT_PATH%/test/_testdata/php/bum.php": {
+      "A": "%PROJECT_PATH%/test/_testdata/php/bla.php",
+      "B": "%PROJECT_PATH%/test/_testdata/php/bum.php",
       "Matches": [
         {
           "Content": "$x0 = 1 ; ",
@@ -238,9 +238,9 @@
         }
       ]
     },
-    "/home/ubuntu/projects/x-dry/test/_testdata/php/bla.php_/home/ubuntu/projects/x-dry/test/_testdata/php/foo.php": {
-      "A": "/home/ubuntu/projects/x-dry/test/_testdata/php/bla.php",
-      "B": "/home/ubuntu/projects/x-dry/test/_testdata/php/foo.php",
+    "%PROJECT_PATH%/test/_testdata/php/bla.php_%PROJECT_PATH%/test/_testdata/php/foo.php": {
+      "A": "%PROJECT_PATH%/test/_testdata/php/bla.php",
+      "B": "%PROJECT_PATH%/test/_testdata/php/foo.php",
       "Matches": [
         {
           "Content": "$x0 = 1 ; ",
@@ -259,9 +259,9 @@
         }
       ]
     },
-    "/home/ubuntu/projects/x-dry/test/_testdata/php/bum.php_/home/ubuntu/projects/x-dry/test/_testdata/php/foo.php": {
-      "A": "/home/ubuntu/projects/x-dry/test/_testdata/php/bum.php",
-      "B": "/home/ubuntu/projects/x-dry/test/_testdata/php/foo.php",
+    "%PROJECT_PATH%/test/_testdata/php/bum.php_%PROJECT_PATH%/test/_testdata/php/foo.php": {
+      "A": "%PROJECT_PATH%/test/_testdata/php/bum.php",
+      "B": "%PROJECT_PATH%/test/_testdata/php/foo.php",
       "Matches": [
         {
           "Content": "$x0 = 1 ; $x1 = 1 ; print ( $x1 ) ;",
