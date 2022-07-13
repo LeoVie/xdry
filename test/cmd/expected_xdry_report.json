@@ -49,9 +49,24 @@
       "B": "%PROJECT_PATH%/test/_testdata/php/bum.php",
       "Matches": [
         {
+          "Content": "$x = 10",
+          "IndexA": 0,
+          "IndexB": 0
+        },
+        {
+          "Content": " ; $",
+          "IndexA": 7,
+          "IndexB": 8
+        },
+        {
           "Content": " = 50 ; print ( $",
           "IndexA": 12,
           "IndexB": 13
+        },
+        {
+          "Content": " ) ;",
+          "IndexA": 30,
+          "IndexB": 31
         }
       ]
     },
@@ -71,9 +86,19 @@
       "B": "%PROJECT_PATH%/test/_testdata/php/bum.php",
       "Matches": [
         {
+          "Content": "$",
+          "IndexA": 0,
+          "IndexB": 0
+        },
+        {
           "Content": " = 50 ; print ( $",
           "IndexA": 2,
           "IndexB": 13
+        },
+        {
+          "Content": " ) ;",
+          "IndexA": 20,
+          "IndexB": 31
         }
       ]
     },
@@ -93,9 +118,24 @@
       "B": "%PROJECT_PATH%/test/_testdata/php/foo.php",
       "Matches": [
         {
+          "Content": "$x = 10",
+          "IndexA": 0,
+          "IndexB": 0
+        },
+        {
+          "Content": " ; $",
+          "IndexA": 8,
+          "IndexB": 7
+        },
+        {
           "Content": " = 50 ; print ( $",
           "IndexA": 13,
           "IndexB": 12
+        },
+        {
+          "Content": " ) ;",
+          "IndexA": 31,
+          "IndexB": 30
         }
       ]
     }
@@ -134,6 +174,27 @@
         }
       ]
     },
+    "%PROJECT_PATH%/test/_testdata/php/bar.php_%PROJECT_PATH%/test/_testdata/php/bla.php": {
+      "A": "%PROJECT_PATH%/test/_testdata/php/bar.php",
+      "B": "%PROJECT_PATH%/test/_testdata/php/bla.php",
+      "Matches": [
+        {
+          "Content": "$x0 = 1 ; ",
+          "IndexA": 0,
+          "IndexB": 0
+        },
+        {
+          "Content": "print ( $x",
+          "IndexA": 20,
+          "IndexB": 10
+        },
+        {
+          "Content": " ) ;",
+          "IndexA": 31,
+          "IndexB": 21
+        }
+      ]
+    },
     "%PROJECT_PATH%/test/_testdata/php/bar.php_%PROJECT_PATH%/test/_testdata/php/bum.php": {
       "A": "%PROJECT_PATH%/test/_testdata/php/bar.php",
       "B": "%PROJECT_PATH%/test/_testdata/php/bum.php",
@@ -153,6 +214,48 @@
           "Content": "$x0 = 1 ; $x1 = 1 ; print ( $x1 ) ;",
           "IndexA": 0,
           "IndexB": 0
+        }
+      ]
+    },
+    "%PROJECT_PATH%/test/_testdata/php/bla.php_%PROJECT_PATH%/test/_testdata/php/bum.php": {
+      "A": "%PROJECT_PATH%/test/_testdata/php/bla.php",
+      "B": "%PROJECT_PATH%/test/_testdata/php/bum.php",
+      "Matches": [
+        {
+          "Content": "$x0 = 1 ; ",
+          "IndexA": 0,
+          "IndexB": 0
+        },
+        {
+          "Content": "print ( $x",
+          "IndexA": 10,
+          "IndexB": 20
+        },
+        {
+          "Content": " ) ;",
+          "IndexA": 21,
+          "IndexB": 31
+        }
+      ]
+    },
+    "%PROJECT_PATH%/test/_testdata/php/bla.php_%PROJECT_PATH%/test/_testdata/php/foo.php": {
+      "A": "%PROJECT_PATH%/test/_testdata/php/bla.php",
+      "B": "%PROJECT_PATH%/test/_testdata/php/foo.php",
+      "Matches": [
+        {
+          "Content": "$x0 = 1 ; ",
+          "IndexA": 0,
+          "IndexB": 0
+        },
+        {
+          "Content": "print ( $x",
+          "IndexA": 10,
+          "IndexB": 20
+        },
+        {
+          "Content": " ) ;",
+          "IndexA": 21,
+          "IndexB": 31
         }
       ]
     },

@@ -1,8 +1,9 @@
 {
   "settings": {
     "minCloneLengths": {
-      "level-1": 10,
-      "level-2": 20
+      "level-1": 1,
+      "level-2": 1,
+      "level-3": 1
     }
   },
   "reports": [
