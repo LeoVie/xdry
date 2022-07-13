@@ -13,9 +13,9 @@ import (
 )
 
 type Clone = struct {
-	A     string
-	B     string
-	Match string
+	A       string
+	B       string
+	Matches []compare.Match
 }
 
 func DetectInDirectory(directory string, level int, levelNormalizers map[int][]config.Normalizer) (error, map[string]Clone) {
@@ -63,29 +63,35 @@ func detectClones(normalizedFileContents map[string]string) map[string]Clone {
 					return
 				}
 
-				longestMatch := compare.FindLongestMatch(aContent, bContent)
-
-				if longestMatch == "" {
-					return
-				}
-
 				hash := calculateCloneHash(aPath, bPath)
 
-				var first string
-				var second string
+				var firstPath string
+				var secondPath string
+				var firstContent string
+				var secondContent string
 				if aPath < bPath {
-					first = aPath
-					second = bPath
+					firstPath = aPath
+					secondPath = bPath
+					firstContent = aContent
+					secondContent = bContent
 				} else {
-					first = bPath
-					second = aPath
+					firstPath = bPath
+					secondPath = aPath
+					firstContent = bContent
+					secondContent = aContent
+				}
+
+				matches := compare.FindMatches(firstContent, secondContent)
+
+				if len(matches) == 0 {
+					return
 				}
 
 				clonesMutex.Lock()
 				clones[hash] = Clone{
-					A:     first,
-					B:     second,
-					Match: longestMatch,
+					A:       firstPath,
+					B:       secondPath,
+					Matches: matches,
 				}
 				clonesMutex.Unlock()
 			}(aPath, aContent, bPath, bContent)

@@ -8,6 +8,7 @@ import (
 	"os"
 	"strings"
 	"x-dry-go/internal/clone_detect"
+	"x-dry-go/internal/compare"
 	"x-dry-go/internal/config"
 )
 
@@ -69,8 +70,8 @@ func Analyze(out io.Writer, configPath string) int {
 		}
 	}
 
-	relevantType1Clones := filterClonesByLength(type1Clones, 20)
-	relevantType2Clones := filterClonesByLength(type2Clones, 20)
+	relevantType1Clones := filterClonesByLength(type1Clones, 1)
+	relevantType2Clones := filterClonesByLength(type2Clones, 1)
 
 	clones := map[string]map[string]clone_detect.Clone{
 		"TYPE 1": relevantType1Clones,
@@ -112,11 +113,25 @@ func filterClonesByLength(clones map[string]clone_detect.Clone, minLength int) m
 	filtered := make(map[string]clone_detect.Clone)
 
 	for key, clone := range clones {
-		if len(clone.Match) < minLength {
+		filteredMatches := []compare.Match{}
+
+		for _, match := range clone.Matches {
+			if len(match.Content) < minLength {
+				continue
+			}
+
+			filteredMatches = append(filteredMatches, match)
+		}
+
+		if len(filteredMatches) == 0 {
 			continue
 		}
 
-		filtered[key] = clone
+		filtered[key] = clone_detect.Clone{
+			A:       clone.A,
+			B:       clone.B,
+			Matches: filteredMatches,
+		}
 	}
 
 	return filtered
