@@ -1,7 +1,13 @@
 {
+  "settings": {
+    "minCloneLengths": {
+      "level-1": 10,
+      "level-2": 20
+    }
+  },
   "directories": [
-    "%pwd%/test/_testdata/php/",
-    "./test/_testdata/javascript/"
+    "%pwd%/test/_testdata/php",
+    "./test/_testdata/javascript"
   ],
   "normalizers": [
     {

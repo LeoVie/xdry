@@ -1,4 +1,11 @@
 {
+  "settings": {
+    "minCloneLengths": {
+      "level-1": 1,
+      "level-2": 1,
+      "level-3": 1
+    }
+  },
   "reports": [
     {
       "type": "json",
@@ -7,47 +14,63 @@
   ],
   "directories": [
     "%pwd%/test/_testdata/php/",
-    "./test/_testdata/javascript/"
+    "%pwd%/test/_testdata/javascript/"
   ],
   "normalizers": [
     {
       "level": 1,
       "extension": ".php",
-      "command": "php",
+      "command": "docker",
       "args": [
-        "/home/ubuntu/projects/x-dry-php-plugin/bin/console",
+        "run",
+        "--rm",
+        "-v",
+        "%FILEPATH%:/file.php",
+        "leovie/x-dry-php-plugin:latest",
         "normalize:level-1",
-        "%FILEPATH%"
+        "/file.php"
       ]
     },
     {
       "level": 2,
       "extension": ".php",
-      "command": "php",
+      "command": "docker",
       "args": [
-        "/home/ubuntu/projects/x-dry-php-plugin/bin/console",
+        "run",
+        "--rm",
+        "-v",
+        "%FILEPATH%:/file.php",
+        "leovie/x-dry-php-plugin:latest",
         "normalize:level-2",
-        "%FILEPATH%"
+        "/file.php"
       ]
     },
     {
       "level": 1,
       "extension": ".js",
-      "command": "node",
+      "command": "docker",
       "args": [
-        "/home/ubuntu/projects/x-dry-javascript-plugin/index.js",
+        "run",
+        "--rm",
+        "-v",
+        "%FILEPATH%:/file.js",
+        "leovie/x-dry-javascript-plugin:latest",
         "normalize:level-1",
-        "%FILEPATH%"
+        "/file.js"
       ]
     },
     {
       "level": 2,
       "extension": ".js",
-      "command": "node",
+      "command": "docker",
       "args": [
-        "/home/ubuntu/projects/x-dry-javascript-plugin/index.js",
+        "run",
+        "--rm",
+        "-v",
+        "%FILEPATH%:/file.js",
+        "leovie/x-dry-javascript-plugin:latest",
         "normalize:level-2",
-        "%FILEPATH%"
+        "/file.js"
       ]
     }
   ]

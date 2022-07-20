@@ -1,9 +1,12 @@
 package main
 
 import (
+	"fmt"
 	"github.com/stretchr/testify/assert"
 	"io"
 	"os"
+	"path"
+	"strings"
 	"testing"
 	"x-dry-go/internal/service"
 )
@@ -14,12 +17,17 @@ func TestRun(t *testing.T) {
 
 	assert.NoFileExists(t, generatedReportFile)
 
-	wantBytes, _ := os.ReadFile("expected_xdry_report.json")
-	want := string(wantBytes)
-
 	cwd, _ := os.Getwd()
 
-	configPath := cwd + string(os.PathSeparator) + "xdry.json"
+	projectPath := path.Join(cwd, "..", "..")
+
+	fmt.Println(projectPath)
+
+	wantBytes, _ := os.ReadFile("expected_xdry_report.json")
+	want := string(wantBytes)
+	want = strings.ReplaceAll(want, "%PROJECT_PATH%", projectPath)
+
+	configPath := path.Join(cwd, "xdry.json")
 
 	var out io.Writer = os.Stdout
 

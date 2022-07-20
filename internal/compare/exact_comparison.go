@@ -2,6 +2,7 @@ package compare
 
 import (
 	"github.com/sergi/go-diff/diffmatchpatch"
+	"strings"
 )
 
 type Match struct {
@@ -10,7 +11,7 @@ type Match struct {
 	IndexB  int
 }
 
-func FindMatches(a string, b string) []Match {
+func FindExactMatches(a string, b string) []Match {
 	dmp := diffmatchpatch.New()
 
 	diffs := dmp.DiffMain(a, b, false)
@@ -38,4 +39,42 @@ func FindMatches(a string, b string) []Match {
 	}
 
 	return matches
+}
+
+func FindLongestCommonSubsequence(a string, b string) []Match {
+	dmp := diffmatchpatch.New()
+
+	diffs := dmp.DiffMain(a, b, false)
+
+	indexA := 0
+	indexB := 0
+	matchBuffer := strings.Builder{}
+	for _, diff := range diffs {
+		text := diff.Text
+
+		switch diff.Type {
+		case diffmatchpatch.DiffInsert:
+			if matchBuffer.Len() == 0 {
+				indexB += len(text)
+			}
+		case diffmatchpatch.DiffDelete:
+			if matchBuffer.Len() == 0 {
+				indexA += len(text)
+			}
+		case diffmatchpatch.DiffEqual:
+			matchBuffer.WriteString(text)
+		}
+	}
+
+	if matchBuffer.Len() == 0 {
+		return []Match{}
+	}
+
+	return []Match{
+		{
+			Content: matchBuffer.String(),
+			IndexA:  indexA,
+			IndexB:  indexB,
+		},
+	}
 }

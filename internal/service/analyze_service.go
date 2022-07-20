@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"path"
 	"strings"
 	"x-dry-go/internal/clone_detect"
 	"x-dry-go/internal/compare"
@@ -48,14 +49,21 @@ func Analyze(out io.Writer, configPath string) int {
 
 	type1Clones := make(map[string]clone_detect.Clone)
 	type2Clones := make(map[string]clone_detect.Clone)
+	type3Clones := make(map[string]clone_detect.Clone)
 	for _, directory := range configuration.Directories {
-		err, type1ClonesInDir := clone_detect.DetectInDirectory(directory, CommandFailure, levelNormalizers)
+		err, type1ClonesInDir := clone_detect.DetectInDirectory(directory, 1, levelNormalizers)
 		if err != nil {
 			fmt.Fprintln(out, err)
 
 			return CommandFailure
 		}
 		err, type2ClonesInDir := clone_detect.DetectInDirectory(directory, 2, levelNormalizers)
+		if err != nil {
+			fmt.Fprintln(out, err)
+
+			return CommandFailure
+		}
+		err, type3ClonesInDir := clone_detect.DetectInDirectory(directory, 3, levelNormalizers)
 		if err != nil {
 			fmt.Fprintln(out, err)
 
@@ -68,27 +76,24 @@ func Analyze(out io.Writer, configPath string) int {
 		for key, clone := range type2ClonesInDir {
 			type2Clones[key] = clone
 		}
+		for key, clone := range type3ClonesInDir {
+			type3Clones[key] = clone
+		}
 	}
 
-	relevantType1Clones := filterClonesByLength(type1Clones, 1)
-	relevantType2Clones := filterClonesByLength(type2Clones, 1)
+	relevantType1Clones := filterClonesByLength(type1Clones, configuration.Settings.MinCloneLengths["level-1"])
+	relevantType2Clones := filterClonesByLength(type2Clones, configuration.Settings.MinCloneLengths["level-2"])
+	relevantType3Clones := filterClonesByLength(type3Clones, configuration.Settings.MinCloneLengths["level-3"])
 
 	clones := map[string]map[string]clone_detect.Clone{
 		"TYPE 1": relevantType1Clones,
 		"TYPE 2": relevantType2Clones,
+		"TYPE 3": relevantType3Clones,
 	}
 
 	for _, report := range configuration.Reports {
 		if report.Type == "json" {
-			jsonStr, err := json.Marshal(clones)
-
-			if err != nil {
-				fmt.Fprintln(out, err)
-
-				return CommandFailure
-			}
-
-			err = os.WriteFile(report.Path, jsonStr, 0644)
+			err := writeJsonReport(clones, report)
 
 			if err != nil {
 				fmt.Fprintln(out, err)
@@ -101,12 +106,19 @@ func Analyze(out io.Writer, configPath string) int {
 	return CommandSuccess
 }
 
+func writeJsonReport(clones map[string]map[string]clone_detect.Clone, report config.Report) error {
+	jsonStr, err := json.Marshal(clones)
+	err = os.WriteFile(report.Path, jsonStr, 0644)
+
+	return err
+}
+
 func convertConfigPathToAbsolutePath(configPath string, cwd string) string {
 	if strings.HasPrefix(configPath, "/") {
 		return configPath
 	}
 
-	return cwd + string(os.PathSeparator) + configPath
+	return path.Join(cwd, configPath)
 }
 
 func filterClonesByLength(clones map[string]clone_detect.Clone, minLength int) map[string]clone_detect.Clone {

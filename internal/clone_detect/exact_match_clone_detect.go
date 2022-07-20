@@ -34,17 +34,36 @@ func DetectInDirectory(directory string, level int, levelNormalizers map[int][]c
 		return err, map[string]Clone{}
 	}
 
+	normalizeLevel := level
+	if level > 2 {
+		normalizeLevel = 2
+	}
+
 	normalizedFileContents := normalizeFiles(
-		level,
+		normalizeLevel,
 		levelNormalizers,
 		filepaths,
 	)
-	clones := detectClones(normalizedFileContents)
+
+	var compareFunc func(string, string) []compare.Match
+	if level == 1 || level == 2 {
+		compareFunc = func(a string, b string) []compare.Match {
+			return compare.FindExactMatches(a, b)
+		}
+	} else if level == 3 {
+		compareFunc = func(a string, b string) []compare.Match {
+			return compare.FindLongestCommonSubsequence(a, b)
+		}
+	} else {
+		return fmt.Errorf("no compare function found for level %d", level), make(map[string]Clone)
+	}
+
+	clones := detectClones(normalizedFileContents, compareFunc)
 
 	return nil, clones
 }
 
-func detectClones(normalizedFileContents map[string]string) map[string]Clone {
+func detectClones(normalizedFileContents map[string]string, compareFunc func(a string, b string) []compare.Match) map[string]Clone {
 	var (
 		clonesMutex sync.Mutex
 		clones      = make(map[string]Clone)
@@ -63,25 +82,11 @@ func detectClones(normalizedFileContents map[string]string) map[string]Clone {
 					return
 				}
 
-				hash := calculateCloneHash(aPath, bPath)
+				firstPath, secondPath, firstContent, secondContent := orderPathsAndContents(aPath, aContent, bPath, bContent)
 
-				var firstPath string
-				var secondPath string
-				var firstContent string
-				var secondContent string
-				if aPath < bPath {
-					firstPath = aPath
-					secondPath = bPath
-					firstContent = aContent
-					secondContent = bContent
-				} else {
-					firstPath = bPath
-					secondPath = aPath
-					firstContent = bContent
-					secondContent = aContent
-				}
+				hash := buildCloneHash(firstPath, secondPath)
 
-				matches := compare.FindMatches(firstContent, secondContent)
+				matches := compareFunc(firstContent, secondContent)
 
 				if len(matches) == 0 {
 					return
@@ -99,6 +104,14 @@ func detectClones(normalizedFileContents map[string]string) map[string]Clone {
 	}
 	clonesWg.Wait()
 	return clones
+}
+
+func orderPathsAndContents(aPath string, aContent string, bPath string, bContent string) (string, string, string, string) {
+	if aPath < bPath {
+		return aPath, bPath, aContent, bContent
+	}
+
+	return bPath, aPath, bContent, aContent
 }
 
 func normalizeFiles(
@@ -140,10 +153,6 @@ func normalizeFiles(
 	return normalizedFileContents
 }
 
-func calculateCloneHash(aPath string, bPath string) string {
-	if aPath < bPath {
-		return aPath + "_" + bPath
-	}
-
-	return bPath + "_" + aPath
+func buildCloneHash(aPath string, bPath string) string {
+	return aPath + "_" + bPath
 }
