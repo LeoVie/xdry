@@ -1,0 +1,28 @@
+on:
+  release:
+    types: [ published ]
+  workflow_dispatch: ~
+
+jobs:
+  Build_and_push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get tag
+        id: get_tag
+        run: echo ::set-output name=TAG::${GITHUB_REF#refs/tags/v}
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: "Check out repository code"
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.PAT_FOR_XDRY_VERSION_UPDATING }}
+      - name: Update VERSION file
+        run: echo ${{ steps.get_tag.outputs.TAG }} > VERSION
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          branch: main
+          commit_message: Update VERSION file
+          file_pattern: VERSION
