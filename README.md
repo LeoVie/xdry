@@ -4,18 +4,19 @@ xdry detects duplicated behaviour in your application, even if the duplicated pa
 to each other. Likely you should read a bit about the [theoretical background](http://xdry.leovie.de/blog/0.html)
 for a better understanding.
 
-## Run via Docker (recommended)
-
-```bash
-docker run -v {path_to_project}:/project leovie/xdry -h
-```
-
 ## Run via binary
 
 Download latest release and run via
 
 ```bash
 ./xdry {path_to_project} -h
+```
+
+## Run via Docker
+There's also a Docker image available. You can you this via
+
+```bash
+docker run -v {path_to_project}:/project leovie/xdry -h
 ```
 
 ## Documentation
