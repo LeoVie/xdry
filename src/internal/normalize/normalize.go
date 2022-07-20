@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"path/filepath"
 	"strings"
-	"x-dry-go/internal/cli"
-	"x-dry-go/internal/config"
+	"x-dry-go/src/internal/cli"
+	"x-dry-go/src/internal/config"
 )
 
 func Normalize(path string, normalizers []config.Normalizer, commandExecutor cli.CommandExecutor) (error, string) {

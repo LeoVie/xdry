@@ -6,10 +6,10 @@ import (
 	"os"
 	"path/filepath"
 	"sync"
-	"x-dry-go/internal/cli"
-	"x-dry-go/internal/compare"
-	"x-dry-go/internal/config"
-	"x-dry-go/internal/normalize"
+	"x-dry-go/src/internal/cli"
+	"x-dry-go/src/internal/compare"
+	"x-dry-go/src/internal/config"
+	"x-dry-go/src/internal/normalize"
 )
 
 type Clone = struct {

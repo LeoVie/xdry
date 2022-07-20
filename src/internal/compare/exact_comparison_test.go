@@ -3,7 +3,6 @@ package compare
 import (
 	"github.com/stretchr/testify/assert"
 	"testing"
-	"x-dry-go/internal/compare"
 )
 
 func TestFindExactMatches(t *testing.T) {
@@ -11,17 +10,17 @@ func TestFindExactMatches(t *testing.T) {
 		name string
 		a    string
 		b    string
-		want []compare.Match
+		want []Match
 	}{
 		{"#1",
 			"ABCDEFGHIJ",
 			"KLMNOPQRST",
-			[]compare.Match{},
+			[]Match{},
 		},
 		{"#2",
 			"ABCDEFGHIJ",
 			"ABCDEFGHIJ",
-			[]compare.Match{
+			[]Match{
 				{
 					Content: "ABCDEFGHIJ",
 					IndexA:  0,
@@ -31,7 +30,7 @@ func TestFindExactMatches(t *testing.T) {
 		{"#3",
 			"ABCDEFGHIJ",
 			"ABCDE12345",
-			[]compare.Match{
+			[]Match{
 				{
 					Content: "ABCDE",
 					IndexA:  0,
@@ -42,7 +41,7 @@ func TestFindExactMatches(t *testing.T) {
 			"#4",
 			"ABCDEFGHIJ",
 			"ABCDEF2345",
-			[]compare.Match{
+			[]Match{
 				{
 					Content: "ABCDEF",
 					IndexA:  0,
@@ -54,7 +53,7 @@ func TestFindExactMatches(t *testing.T) {
 			"#5",
 			"ABCDEFGHIJ",
 			"_ABCDE1234",
-			[]compare.Match{
+			[]Match{
 				{
 					Content: "ABCDE",
 					IndexA:  0,
@@ -66,7 +65,7 @@ func TestFindExactMatches(t *testing.T) {
 			"#6",
 			"_ABCDE1234",
 			"ABCDEFGHIJ",
-			[]compare.Match{
+			[]Match{
 				{
 					Content: "ABCDE",
 					IndexA:  1,
@@ -78,7 +77,7 @@ func TestFindExactMatches(t *testing.T) {
 			"#7",
 			"ABCDEABCDEFGHIJ",
 			"ABCDEF___ABCDEFGHIJ",
-			[]compare.Match{
+			[]Match{
 				{
 					Content: "ABCDE",
 					IndexA:  0,
@@ -95,7 +94,7 @@ func TestFindExactMatches(t *testing.T) {
 
 	for _, dataset := range datasets {
 		t.Run(dataset.name, func(t *testing.T) {
-			actual := compare.FindExactMatches(dataset.a, dataset.b)
+			actual := FindExactMatches(dataset.a, dataset.b)
 
 			assert.Equal(t, dataset.want, actual)
 		})
@@ -107,17 +106,17 @@ func TestFindLongestCommonSubsequence(t *testing.T) {
 		name string
 		a    string
 		b    string
-		want []compare.Match
+		want []Match
 	}{
 		{"#1",
 			"ABCDEFGHIJ",
 			"KLMNOPQRST",
-			[]compare.Match{},
+			[]Match{},
 		},
 		{"#2",
 			"ABCDEFGHIJ",
 			"ABCDEFGHIJ",
-			[]compare.Match{
+			[]Match{
 				{
 					Content: "ABCDEFGHIJ",
 					IndexA:  0,
@@ -127,7 +126,7 @@ func TestFindLongestCommonSubsequence(t *testing.T) {
 		{"#3",
 			"ABCDEFGHIJ",
 			"ABCDE12345",
-			[]compare.Match{
+			[]Match{
 				{
 					Content: "ABCDE",
 					IndexA:  0,
@@ -138,7 +137,7 @@ func TestFindLongestCommonSubsequence(t *testing.T) {
 			"#4",
 			"ABCDEABCDEFGHIJ",
 			"ABCDEF___ABCDEFGHIJ",
-			[]compare.Match{
+			[]Match{
 				{
 					Content: "ABCDEABCDEFGHIJ",
 					IndexA:  0,
@@ -150,7 +149,7 @@ func TestFindLongestCommonSubsequence(t *testing.T) {
 			"#5",
 			"ABC",
 			"CBA",
-			[]compare.Match{
+			[]Match{
 				{
 					Content: "C",
 					IndexA:  2,
@@ -162,7 +161,7 @@ func TestFindLongestCommonSubsequence(t *testing.T) {
 			"#6",
 			"AAABCDDDEE",
 			"ABCXDDE",
-			[]compare.Match{
+			[]Match{
 				{
 					Content: "ABCDDE",
 					IndexA:  2,
@@ -174,7 +173,7 @@ func TestFindLongestCommonSubsequence(t *testing.T) {
 
 	for _, dataset := range datasets {
 		t.Run(dataset.name, func(t *testing.T) {
-			actual := compare.FindLongestCommonSubsequence(dataset.a, dataset.b)
+			actual := FindLongestCommonSubsequence(dataset.a, dataset.b)
 
 			assert.Equal(t, dataset.want, actual)
 		})

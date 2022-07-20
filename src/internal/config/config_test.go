@@ -6,7 +6,6 @@ import (
 	"os"
 	"path"
 	"testing"
-	"x-dry-go/internal/config"
 )
 
 func TestParseConfig(t *testing.T) {
@@ -15,10 +14,10 @@ func TestParseConfig(t *testing.T) {
 		log.Fatal(err)
 	}
 
-	configPath := path.Join(cwd, "xdry.json")
+	configPath := path.Join(cwd, "..", "..", "..", "_testdata", "xdry_1.json")
 
-	want := config.Config{
-		Settings: config.Settings{
+	want := Config{
+		Settings: Settings{
 			MinCloneLengths: map[string]int{
 				"level-1": 10,
 				"level-2": 20,
@@ -26,9 +25,9 @@ func TestParseConfig(t *testing.T) {
 		},
 		Directories: []string{
 			path.Join(cwd, "test", "_testdata", "php"),
-			path.Join(cwd, ".", "test", "_testdata", "javascript"),
+			path.Join(cwd, "..", "..", "..", "_testdata", "test", "_testdata", "javascript"),
 		},
-		Normalizers: []config.Normalizer{
+		Normalizers: []Normalizer{
 			{
 				Level:     1,
 				Extension: ".php",
@@ -40,7 +39,7 @@ func TestParseConfig(t *testing.T) {
 		},
 	}
 
-	_, actual := config.ParseConfig(configPath, cwd)
+	_, actual := ParseConfig(configPath, cwd)
 
 	assert.Equal(t, &want, actual)
 }
