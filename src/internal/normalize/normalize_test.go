@@ -5,15 +5,14 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 	"testing"
-	"x-dry-go/internal/config"
-	"x-dry-go/internal/normalize"
-	"x-dry-go/test/_mocks/cli"
+	"x-dry-go/src/_mocks/cli"
+	"x-dry-go/src/internal/config"
 )
 
 func TestNormalizeErrorsWhenNoNormalizerFoundForFileExtension(t *testing.T) {
 	want := fmt.Errorf("no normalizer found for file extension '.txt'")
 
-	err, _ := normalize.Normalize("foo.txt", []config.Normalizer{}, cli.NewMockCommandExecutor(gomock.NewController(t)))
+	err, _ := Normalize("foo.txt", []config.Normalizer{}, cli.NewMockCommandExecutor(gomock.NewController(t)))
 
 	assert.Equal(t, want, err)
 }
@@ -40,7 +39,7 @@ func TestNormalizeErrorsWhenNormalizerErrors(t *testing.T) {
 			Args:      []string{},
 		},
 	}
-	err, _ := normalize.Normalize("foo.txt", normalizers, commandExecutor)
+	err, _ := Normalize("foo.txt", normalizers, commandExecutor)
 
 	assert.Equal(t, want, err)
 }
@@ -67,7 +66,7 @@ func TestNormalize(t *testing.T) {
 			Args:      []string{},
 		},
 	}
-	err, output := normalize.Normalize("foo.txt", normalizers, commandExecutor)
+	err, output := Normalize("foo.txt", normalizers, commandExecutor)
 
 	assert.Nil(t, err)
 	assert.Equal(t, want, output)

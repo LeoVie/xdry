@@ -8,9 +8,9 @@ import (
 	"os"
 	"path"
 	"strings"
-	"x-dry-go/internal/clone_detect"
-	"x-dry-go/internal/compare"
-	"x-dry-go/internal/config"
+	"x-dry-go/src/internal/clone_detect"
+	"x-dry-go/src/internal/compare"
+	"x-dry-go/src/internal/config"
 )
 
 const (

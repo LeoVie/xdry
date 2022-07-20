@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 	"path"
-	"x-dry-go/internal/service"
+	"x-dry-go/src/internal/service"
 )
 
 func main() {
