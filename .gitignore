@@ -1,3 +1,5 @@
 .idea
 reports/*
 !reports/.gitkeep
+build/*
+!build/.gitkeep

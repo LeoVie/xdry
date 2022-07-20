@@ -20,7 +20,7 @@ jobs:
 
       - name: Build
         run: |
-          make build
+          make build_for_all_platforms
 
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
@@ -30,4 +30,4 @@ jobs:
           title: "Development Build"
           files: |
             LICENSE
-            xdry
+            build/*
