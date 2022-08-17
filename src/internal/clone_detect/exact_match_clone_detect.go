@@ -184,6 +184,11 @@ func normalizeFiles(
 		return normalizedFileContents
 	}
 
+	mappedNormalizers := make(map[string]config.Normalizer)
+	for _, normalizer := range normalizers {
+		mappedNormalizers[normalizer.Extension] = normalizer
+	}
+
 	const max = 12
 	semaphore := make(chan struct{}, max)
 	wg := &sync.WaitGroup{}
@@ -192,10 +197,10 @@ func normalizeFiles(
 		semaphore <- struct{}{}
 		wg.Add(1)
 
-		go func(path string, normalizers []config.Normalizer) {
+		go func(path string, mappedNormalizers map[string]config.Normalizer) {
 			defer wg.Done()
 
-			err, normalizedFileContent := normalize.Normalize(path, normalizers, cli.NewCommandExecutor())
+			err, normalizedFileContent := normalize.Normalize(path, mappedNormalizers, cli.NewCommandExecutor())
 
 			if err != nil {
 				fmt.Println(err)
@@ -206,7 +211,7 @@ func normalizeFiles(
 			normalizedFileContentsMutex.Unlock()
 
 			<-semaphore
-		}(path, normalizers)
+		}(path, mappedNormalizers)
 	}
 	wg.Wait()
 

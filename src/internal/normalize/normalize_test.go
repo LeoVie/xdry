@@ -14,7 +14,7 @@ func TestNormalizeErrorsWhenNoNormalizerFoundForFileExtension(t *testing.T) {
 
 	want := fmt.Errorf("no normalizer found for file extension '.txt'")
 
-	err, _ := Normalize("foo.txt", []config.Normalizer{}, cli.NewMockCommandExecutor(gomock.NewController(t)))
+	err, _ := Normalize("foo.txt", make(map[string]config.Normalizer), cli.NewMockCommandExecutor(gomock.NewController(t)))
 
 	g.Expect(err).Should(Equal(want))
 }
@@ -35,13 +35,12 @@ func TestNormalizeErrorsWhenNormalizerErrors(t *testing.T) {
 		Execute(gomock.Any(), gomock.Any()).
 		Return("", fmt.Errorf("error"))
 
-	normalizers := []config.Normalizer{
-		{
-			Level:     1,
-			Extension: ".txt",
-			Command:   "pwd",
-			Args:      []string{},
-		},
+	normalizers := make(map[string]config.Normalizer)
+	normalizers[".txt"] = config.Normalizer{
+		Level:     1,
+		Extension: ".txt",
+		Command:   "pwd",
+		Args:      []string{},
 	}
 	err, _ := Normalize("foo.txt", normalizers, commandExecutor)
 
@@ -64,13 +63,12 @@ func TestNormalize(t *testing.T) {
 		Execute(gomock.Any(), gomock.Any()).
 		Return("output of the normalizer command", nil)
 
-	normalizers := []config.Normalizer{
-		{
-			Level:     1,
-			Extension: ".txt",
-			Command:   "pwd",
-			Args:      []string{},
-		},
+	normalizers := make(map[string]config.Normalizer)
+	normalizers[".txt"] = config.Normalizer{
+		Level:     1,
+		Extension: ".txt",
+		Command:   "pwd",
+		Args:      []string{},
 	}
 	err, output := Normalize("foo.txt", normalizers, commandExecutor)
 
