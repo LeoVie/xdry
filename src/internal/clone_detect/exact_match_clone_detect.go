@@ -123,39 +123,6 @@ func detectClones(normalizedFileContents map[string]string, compareFunc func(a s
 		}(pair.APath, pair.AContent, pair.BPath, pair.BContent)
 	}
 
-	//for aPath, aContent := range normalizedFileContents {
-	//	for bPath, bContent := range normalizedFileContents {
-	//		clonesWg.Add(1)
-	//
-	//		go func(aPath string, aContent string, bPath string, bContent string) {
-	//			defer clonesWg.Done()
-	//
-	//			if aPath == bPath {
-	//				return
-	//			}
-	//
-	//			firstPath, secondPath, firstContent, secondContent := orderPathsAndContents(aPath, aContent, bPath, bContent)
-	//
-	//			hash := buildCloneHash(firstPath, secondPath)
-	//
-	//			fmt.Println(firstPath + ", " + secondPath)
-	//
-	//			matches := compareFunc(firstContent, secondContent)
-	//
-	//			if len(matches) == 0 {
-	//				return
-	//			}
-	//
-	//			clonesMutex.Lock()
-	//			clones[hash] = Clone{
-	//				A:       firstPath,
-	//				B:       secondPath,
-	//				Matches: matches,
-	//			}
-	//			clonesMutex.Unlock()
-	//		}(aPath, aContent, bPath, bContent)
-	//	}
-	//}
 	clonesWg.Wait()
 	return clones
 }
