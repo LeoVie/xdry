@@ -130,8 +130,12 @@ func normalizeFiles(
 		return normalizedFileContents
 	}
 
-	var wg sync.WaitGroup
+	const max = 12
+	semaphore := make(chan struct{}, max)
+	wg := &sync.WaitGroup{}
+
 	for _, path := range filepaths {
+		semaphore <- struct{}{}
 		wg.Add(1)
 
 		go func(path string, normalizers []config.Normalizer) {
@@ -146,6 +150,8 @@ func normalizeFiles(
 			normalizedFileContentsMutex.Lock()
 			normalizedFileContents[path] = normalizedFileContent
 			normalizedFileContentsMutex.Unlock()
+
+			<-semaphore
 		}(path, normalizers)
 	}
 	wg.Wait()
