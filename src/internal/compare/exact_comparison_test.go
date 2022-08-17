@@ -1,11 +1,13 @@
 package compare
 
 import (
-	"github.com/stretchr/testify/assert"
+	. "github.com/onsi/gomega"
 	"testing"
 )
 
 func TestFindExactMatches(t *testing.T) {
+	g := NewGomegaWithT(t)
+
 	datasets := []struct {
 		name string
 		a    string
@@ -96,12 +98,14 @@ func TestFindExactMatches(t *testing.T) {
 		t.Run(dataset.name, func(t *testing.T) {
 			actual := FindExactMatches(dataset.a, dataset.b)
 
-			assert.Equal(t, dataset.want, actual)
+			g.Expect(actual).To(Equal(dataset.want))
 		})
 	}
 }
 
 func TestFindLongestCommonSubsequence(t *testing.T) {
+	g := NewGomegaWithT(t)
+
 	datasets := []struct {
 		name string
 		a    string
@@ -175,7 +179,7 @@ func TestFindLongestCommonSubsequence(t *testing.T) {
 		t.Run(dataset.name, func(t *testing.T) {
 			actual := FindLongestCommonSubsequence(dataset.a, dataset.b)
 
-			assert.Equal(t, dataset.want, actual)
+			g.Expect(actual).To(Equal(dataset.want))
 		})
 	}
 }

@@ -47,9 +47,9 @@ func Analyze(out io.Writer, configPath string) int {
 		levelNormalizers[normalizer.Level] = append(levelNormalizers[normalizer.Level], normalizer)
 	}
 
-	type1Clones := make(map[string]clone_detect.Clone)
-	type2Clones := make(map[string]clone_detect.Clone)
-	type3Clones := make(map[string]clone_detect.Clone)
+	var type1Clones []clone_detect.Clone
+	var type2Clones []clone_detect.Clone
+	var type3Clones []clone_detect.Clone
 	for _, directory := range configuration.Directories {
 		err, type1ClonesInDir := clone_detect.DetectInDirectory(directory, 1, levelNormalizers)
 		if err != nil {
@@ -70,14 +70,14 @@ func Analyze(out io.Writer, configPath string) int {
 			return CommandFailure
 		}
 
-		for key, clone := range type1ClonesInDir {
-			type1Clones[key] = clone
+		for _, clone := range type1ClonesInDir {
+			type1Clones = append(type1Clones, clone)
 		}
-		for key, clone := range type2ClonesInDir {
-			type2Clones[key] = clone
+		for _, clone := range type2ClonesInDir {
+			type2Clones = append(type2Clones, clone)
 		}
-		for key, clone := range type3ClonesInDir {
-			type3Clones[key] = clone
+		for _, clone := range type3ClonesInDir {
+			type2Clones = append(type2Clones, clone)
 		}
 	}
 
@@ -85,7 +85,7 @@ func Analyze(out io.Writer, configPath string) int {
 	relevantType2Clones := filterClonesByLength(type2Clones, configuration.Settings.MinCloneLengths["level-2"])
 	relevantType3Clones := filterClonesByLength(type3Clones, configuration.Settings.MinCloneLengths["level-3"])
 
-	clones := map[string]map[string]clone_detect.Clone{
+	clones := map[string][]clone_detect.Clone{
 		"TYPE 1": relevantType1Clones,
 		"TYPE 2": relevantType2Clones,
 		"TYPE 3": relevantType3Clones,
@@ -106,7 +106,7 @@ func Analyze(out io.Writer, configPath string) int {
 	return CommandSuccess
 }
 
-func writeJsonReport(clones map[string]map[string]clone_detect.Clone, report config.Report) error {
+func writeJsonReport(clones map[string][]clone_detect.Clone, report config.Report) error {
 	jsonStr, err := json.Marshal(clones)
 	err = os.WriteFile(report.Path, jsonStr, 0644)
 
@@ -121,10 +121,9 @@ func convertConfigPathToAbsolutePath(configPath string, cwd string) string {
 	return path.Join(cwd, configPath)
 }
 
-func filterClonesByLength(clones map[string]clone_detect.Clone, minLength int) map[string]clone_detect.Clone {
-	filtered := make(map[string]clone_detect.Clone)
-
-	for key, clone := range clones {
+func filterClonesByLength(clones []clone_detect.Clone, minLength int) []clone_detect.Clone {
+	var filtered []clone_detect.Clone
+	for _, clone := range clones {
 		filteredMatches := []compare.Match{}
 
 		for _, match := range clone.Matches {
@@ -139,11 +138,11 @@ func filterClonesByLength(clones map[string]clone_detect.Clone, minLength int) m
 			continue
 		}
 
-		filtered[key] = clone_detect.Clone{
+		filtered = append(filtered, clone_detect.Clone{
 			A:       clone.A,
 			B:       clone.B,
 			Matches: filteredMatches,
-		}
+		})
 	}
 
 	return filtered

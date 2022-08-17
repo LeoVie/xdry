@@ -3,21 +3,25 @@ package normalize
 import (
 	"fmt"
 	"github.com/golang/mock/gomock"
-	"github.com/stretchr/testify/assert"
+	. "github.com/onsi/gomega"
 	"testing"
 	"x-dry-go/src/_mocks/cli"
 	"x-dry-go/src/internal/config"
 )
 
 func TestNormalizeErrorsWhenNoNormalizerFoundForFileExtension(t *testing.T) {
+	g := NewGomegaWithT(t)
+
 	want := fmt.Errorf("no normalizer found for file extension '.txt'")
 
 	err, _ := Normalize("foo.txt", []config.Normalizer{}, cli.NewMockCommandExecutor(gomock.NewController(t)))
 
-	assert.Equal(t, want, err)
+	g.Expect(err).Should(Equal(want))
 }
 
 func TestNormalizeErrorsWhenNormalizerErrors(t *testing.T) {
+	g := NewGomegaWithT(t)
+
 	want := fmt.Errorf("error")
 
 	ctrl := gomock.NewController(t)
@@ -41,10 +45,12 @@ func TestNormalizeErrorsWhenNormalizerErrors(t *testing.T) {
 	}
 	err, _ := Normalize("foo.txt", normalizers, commandExecutor)
 
-	assert.Equal(t, want, err)
+	g.Expect(err).Should(Equal(want))
 }
 
 func TestNormalize(t *testing.T) {
+	g := NewGomegaWithT(t)
+
 	want := "output of the normalizer command"
 
 	ctrl := gomock.NewController(t)
@@ -68,6 +74,6 @@ func TestNormalize(t *testing.T) {
 	}
 	err, output := Normalize("foo.txt", normalizers, commandExecutor)
 
-	assert.Nil(t, err)
-	assert.Equal(t, want, output)
+	g.Expect(err).Should(BeNil())
+	g.Expect(output).Should(Equal(want))
 }
