@@ -2,7 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/stretchr/testify/assert"
+	. "github.com/benjamintf1/unmarshalledmatchers"
+	. "github.com/onsi/gomega"
 	"io"
 	"os"
 	"path"
@@ -12,6 +13,8 @@ import (
 )
 
 func TestRun(t *testing.T) {
+	g := NewGomegaWithT(t)
+
 	cwd, _ := os.Getwd()
 	projectPath := path.Join(cwd, "..", "..")
 
@@ -21,7 +24,7 @@ func TestRun(t *testing.T) {
 
 	os.Remove(generatedReportFile)
 
-	assert.NoFileExists(t, generatedReportFile)
+	g.Expect(generatedReportFile).ShouldNot(BeAnExistingFile())
 
 	wantFile := path.Join(projectPath, "_testdata", "expected_xdry_report.json")
 	wantBytes, _ := os.ReadFile(wantFile)
@@ -38,5 +41,6 @@ func TestRun(t *testing.T) {
 	actualBytes, _ := os.ReadFile(generatedReportFile)
 	actual := string(actualBytes)
 
-	assert.JSONEq(t, want, actual)
+	g.Expect(actual).Should(
+		MatchUnorderedJSON(want))
 }

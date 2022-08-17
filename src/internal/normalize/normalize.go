@@ -8,7 +8,7 @@ import (
 	"x-dry-go/src/internal/config"
 )
 
-func Normalize(path string, normalizers []config.Normalizer, commandExecutor cli.CommandExecutor) (error, string) {
+func Normalize(path string, normalizers map[string]config.Normalizer, commandExecutor cli.CommandExecutor) (error, string) {
 	err, normalizer := findNormalizeImplementation(path, normalizers)
 
 	if err != nil {
@@ -26,14 +26,12 @@ func Normalize(path string, normalizers []config.Normalizer, commandExecutor cli
 
 func findNormalizeImplementation(
 	path string,
-	normalizers []config.Normalizer,
+	normalizers map[string]config.Normalizer,
 ) (error, *config.Normalizer) {
 	fileExtension := filepath.Ext(path)
 
-	for _, normalizer := range normalizers {
-		if normalizer.Extension == fileExtension {
-			return nil, &normalizer
-		}
+	if normalizer, ok := normalizers[fileExtension]; ok {
+		return nil, &normalizer
 	}
 
 	return fmt.Errorf("no normalizer found for file extension '%s'", fileExtension), nil

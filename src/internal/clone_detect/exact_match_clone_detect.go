@@ -18,7 +18,14 @@ type Clone = struct {
 	Matches []compare.Match
 }
 
-func DetectInDirectory(directory string, level int, levelNormalizers map[int][]config.Normalizer) (error, map[string]Clone) {
+type Pair = struct {
+	APath    string
+	AContent string
+	BPath    string
+	BContent string
+}
+
+func DetectInDirectory(directory string, level int, levelNormalizers map[int][]config.Normalizer) (error, []Clone) {
 	var filepaths []string
 	err := filepath.Walk(directory,
 		func(path string, info os.FileInfo, err error) error {
@@ -31,7 +38,7 @@ func DetectInDirectory(directory string, level int, levelNormalizers map[int][]c
 			return nil
 		})
 	if err != nil {
-		return err, map[string]Clone{}
+		return err, []Clone{}
 	}
 
 	normalizeLevel := level
@@ -55,7 +62,7 @@ func DetectInDirectory(directory string, level int, levelNormalizers map[int][]c
 			return compare.FindLongestCommonSubsequence(a, b)
 		}
 	} else {
-		return fmt.Errorf("no compare function found for level %d", level), make(map[string]Clone)
+		return fmt.Errorf("no compare function found for level %d", level), []Clone{}
 	}
 
 	clones := detectClones(normalizedFileContents, compareFunc)
@@ -63,45 +70,59 @@ func DetectInDirectory(directory string, level int, levelNormalizers map[int][]c
 	return nil, clones
 }
 
-func detectClones(normalizedFileContents map[string]string, compareFunc func(a string, b string) []compare.Match) map[string]Clone {
-	var (
-		clonesMutex sync.Mutex
-		clones      = make(map[string]Clone)
-	)
-
-	var clonesWg sync.WaitGroup
+func detectClones(normalizedFileContents map[string]string, compareFunc func(a string, b string) []compare.Match) []Clone {
+	pairs := make(map[string]Pair)
 
 	for aPath, aContent := range normalizedFileContents {
 		for bPath, bContent := range normalizedFileContents {
-			clonesWg.Add(1)
+			if aPath == bPath {
+				continue
+			}
 
-			go func(aPath string, aContent string, bPath string, bContent string) {
-				defer clonesWg.Done()
+			firstPath, secondPath, firstContent, secondContent := orderPathsAndContents(aPath, aContent, bPath, bContent)
 
-				if aPath == bPath {
-					return
-				}
+			hash := buildCloneHash(firstPath, secondPath)
+			if _, ok := pairs[hash]; ok {
+				continue
+			}
 
-				firstPath, secondPath, firstContent, secondContent := orderPathsAndContents(aPath, aContent, bPath, bContent)
-
-				hash := buildCloneHash(firstPath, secondPath)
-
-				matches := compareFunc(firstContent, secondContent)
-
-				if len(matches) == 0 {
-					return
-				}
-
-				clonesMutex.Lock()
-				clones[hash] = Clone{
-					A:       firstPath,
-					B:       secondPath,
-					Matches: matches,
-				}
-				clonesMutex.Unlock()
-			}(aPath, aContent, bPath, bContent)
+			pairs[hash] = Pair{
+				APath:    firstPath,
+				AContent: firstContent,
+				BPath:    secondPath,
+				BContent: secondContent,
+			}
 		}
 	}
+
+	var (
+		clonesMutex sync.Mutex
+		clones      []Clone
+	)
+	var clonesWg sync.WaitGroup
+
+	for _, pair := range pairs {
+		clonesWg.Add(1)
+
+		go func(aPath string, aContent string, bPath string, bContent string) {
+			defer clonesWg.Done()
+
+			matches := compareFunc(aContent, bContent)
+
+			if len(matches) == 0 {
+				return
+			}
+
+			clonesMutex.Lock()
+			clones = append(clones, Clone{
+				A:       aPath,
+				B:       bPath,
+				Matches: matches,
+			})
+			clonesMutex.Unlock()
+		}(pair.APath, pair.AContent, pair.BPath, pair.BContent)
+	}
+
 	clonesWg.Wait()
 	return clones
 }
@@ -130,6 +151,11 @@ func normalizeFiles(
 		return normalizedFileContents
 	}
 
+	mappedNormalizers := make(map[string]config.Normalizer)
+	for _, normalizer := range normalizers {
+		mappedNormalizers[normalizer.Extension] = normalizer
+	}
+
 	const max = 12
 	semaphore := make(chan struct{}, max)
 	wg := &sync.WaitGroup{}
@@ -138,10 +164,10 @@ func normalizeFiles(
 		semaphore <- struct{}{}
 		wg.Add(1)
 
-		go func(path string, normalizers []config.Normalizer) {
+		go func(path string, mappedNormalizers map[string]config.Normalizer) {
 			defer wg.Done()
 
-			err, normalizedFileContent := normalize.Normalize(path, normalizers, cli.NewCommandExecutor())
+			err, normalizedFileContent := normalize.Normalize(path, mappedNormalizers, cli.NewCommandExecutor())
 
 			if err != nil {
 				fmt.Println(err)
@@ -152,7 +178,7 @@ func normalizeFiles(
 			normalizedFileContentsMutex.Unlock()
 
 			<-semaphore
-		}(path, normalizers)
+		}(path, mappedNormalizers)
 	}
 	wg.Wait()
 

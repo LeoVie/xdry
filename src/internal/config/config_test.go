@@ -1,7 +1,7 @@
 package config
 
 import (
-	"github.com/stretchr/testify/assert"
+	. "github.com/onsi/gomega"
 	"log"
 	"os"
 	"path"
@@ -9,6 +9,8 @@ import (
 )
 
 func TestParseConfig(t *testing.T) {
+	g := NewGomegaWithT(t)
+
 	cwd, err := os.Getwd()
 	if err != nil {
 		log.Fatal(err)
@@ -40,6 +42,6 @@ func TestParseConfig(t *testing.T) {
 	}
 
 	_, actual := ParseConfig(configPath, cwd)
-
-	assert.Equal(t, &want, actual)
+	
+	g.Expect(actual).To(Equal(&want))
 }
