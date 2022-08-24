@@ -1,7 +1,6 @@
 package service
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -11,6 +10,7 @@ import (
 	"x-dry-go/src/internal/clone_detect"
 	"x-dry-go/src/internal/compare"
 	"x-dry-go/src/internal/config"
+	"x-dry-go/src/internal/service/reporter"
 )
 
 const (
@@ -93,7 +93,7 @@ func Analyze(out io.Writer, configPath string) int {
 
 	for _, report := range configuration.Reports {
 		if report.Type == "json" {
-			err := writeJsonReport(clones, report)
+			err := reporter.WriteJsonReport(clones, report)
 
 			if err != nil {
 				fmt.Fprintln(out, err)
@@ -104,13 +104,6 @@ func Analyze(out io.Writer, configPath string) int {
 	}
 
 	return CommandSuccess
-}
-
-func writeJsonReport(clones map[string][]clone_detect.Clone, report config.Report) error {
-	jsonStr, err := json.Marshal(clones)
-	err = os.WriteFile(report.Path, jsonStr, 0644)
-
-	return err
 }
 
 func convertConfigPathToAbsolutePath(configPath string, cwd string) string {
