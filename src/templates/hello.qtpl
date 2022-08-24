@@ -1,0 +1,31 @@
+{% import "x-dry-go/src/internal/clone_detect" %}
+
+{% func Clones(clones map[string][]clone_detect.Clone) %}
+    {% for key, _ := range clones %}
+        {%u key %}
+    {% endfor %}
+{% endfunc %}
+
+
+{% func Greetings(names []string) %}
+    {% collapsespace %}
+        <div id="container">
+            <h1>Greetings</h1>
+
+            {% if len(names) == 0 %}
+                <p>Nobody to greet :(</p>
+                {% return %}
+            {% endif %}
+            <ul>
+            {% for i, name := range names %}
+                <li>{%d i %} {%= hello(name) %}</li>
+            {% endfor %}
+            </ul>
+
+        </div>
+    {% endcollapsespace %}
+{% endfunc %}
+
+{% func hello(name string) %}
+	Hello, {%s name %}!
+{% endfunc %}
