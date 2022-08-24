@@ -3,3 +3,5 @@ reports/*
 !reports/.gitkeep
 build/*
 !build/.gitkeep
+_testdata/generated/reports/*
+!_testdata/generated/reports/.gitkeep
