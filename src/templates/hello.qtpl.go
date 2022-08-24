@@ -21,154 +21,182 @@ var (
 )
 
 //line templates/hello.qtpl:3
-func StreamClones(qw422016 *qt422016.Writer, clones map[string][]clone_detect.Clone) {
+func StreamClones(qw422016 *qt422016.Writer, clonesGroupedByTypes map[string][]clone_detect.Clone) {
 //line templates/hello.qtpl:3
 	qw422016.N().S(`
-    `)
-//line templates/hello.qtpl:4
-	for key, _ := range clones {
-//line templates/hello.qtpl:4
+    <!doctype html>
+    <html lang="en">
+    <head>
+        <meta charset="utf-8"></meta>
+        <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+              integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" rel="stylesheet"
+              crossorigin="anonymous"></link>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/default.min.css"
+              rel="stylesheet"></link>
+        <title>xdry report</title>
+    </head>
+    <body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <div class="container">
+        <div class="row">
+            <div class="col-1"><img src="resources/icons/php-dry.svg"
+                                    alt="The logo of php-dry: A T-shirt on a clothesline rope."/></div>
+            <div class="col-11"><h1>xdry report</h1></div>
+        </div>
+        <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <button class="nav-link active" id="nav-type-1-clones-tab" data-bs-toggle="tab"
+                        data-bs-target="#nav-type-1-clones">Type 1 Clones
+                </button>
+                <button class="nav-link" id="nav-type-2-clones-tab" data-bs-toggle="tab"
+                        data-bs-target="#nav-type-2-clones">Type 2 Clones
+                </button>
+                <button class="nav-link" id="nav-type-3-clones-tab" data-bs-toggle="tab"
+                        data-bs-target="#nav-type-3-clones">Type 3 Clones
+                </button>
+                <button class="nav-link" id="nav-type-4-clones-tab" data-bs-toggle="tab"
+                        data-bs-target="#nav-type-4-clones">Type 4 Clones
+                </button>
+            </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+            `)
+//line templates/hello.qtpl:45
+	for cloneType, clones := range clonesGroupedByTypes {
+//line templates/hello.qtpl:45
 		qw422016.N().S(`
-        `)
-//line templates/hello.qtpl:5
-		qw422016.N().U(key)
-//line templates/hello.qtpl:5
+                <div class="tab-pane fade show`)
+//line templates/hello.qtpl:46
+		if cloneType == "1" {
+//line templates/hello.qtpl:46
+			qw422016.N().S(` active`)
+//line templates/hello.qtpl:46
+		}
+//line templates/hello.qtpl:46
+		qw422016.N().S(`" id="nav-type-`)
+//line templates/hello.qtpl:46
+		qw422016.E().S(cloneType)
+//line templates/hello.qtpl:46
+		qw422016.N().S(`-clones" role="tabpanel"
+                     aria-labelledby="nav-type-`)
+//line templates/hello.qtpl:47
+		qw422016.E().S(cloneType)
+//line templates/hello.qtpl:47
+		qw422016.N().S(`-clones-tab">
+                    <h3>Detected `)
+//line templates/hello.qtpl:48
+		qw422016.N().D(len(clones))
+//line templates/hello.qtpl:48
+		qw422016.N().S(` clone`)
+//line templates/hello.qtpl:48
+		if len(clones) != 1 {
+//line templates/hello.qtpl:48
+			qw422016.N().S(`s`)
+//line templates/hello.qtpl:48
+		}
+//line templates/hello.qtpl:48
+		qw422016.N().S(`</h3>
+
+                    `)
+//line templates/hello.qtpl:50
+		for cloneIndex, _ := range clones {
+//line templates/hello.qtpl:50
+			qw422016.N().S(`
+
+
+                    <card class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a id="type_`)
+//line templates/hello.qtpl:56
+			qw422016.E().S(cloneType)
+//line templates/hello.qtpl:56
+			qw422016.N().S(`_clone_`)
+//line templates/hello.qtpl:56
+			qw422016.N().D(cloneIndex)
+//line templates/hello.qtpl:56
+			qw422016.N().S(`" href="#type_`)
+//line templates/hello.qtpl:56
+			qw422016.E().S(cloneType)
+//line templates/hello.qtpl:56
+			qw422016.N().S(`_clone_`)
+//line templates/hello.qtpl:56
+			qw422016.N().D(cloneIndex)
+//line templates/hello.qtpl:56
+			qw422016.N().S(`">
+                                    <span class="badge bg-secondary">Clone `)
+//line templates/hello.qtpl:57
+			qw422016.N().D(cloneIndex)
+//line templates/hello.qtpl:57
+			qw422016.N().S(`</span>
+                                </a>
+                            </h5>
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">File</th>
+                                    <th scope="col">Lines</th>
+                                    <th scope="col">Content</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                abc
+                                </tbody>
+                            </table>
+                        </div>
+                    </card>
+
+                    `)
+//line templates/hello.qtpl:76
+		}
+//line templates/hello.qtpl:76
 		qw422016.N().S(`
-    `)
-//line templates/hello.qtpl:6
+
+                </div>
+            `)
+//line templates/hello.qtpl:79
 	}
-//line templates/hello.qtpl:6
+//line templates/hello.qtpl:79
 	qw422016.N().S(`
+        </div>
+
+
+    </div>
+    </body>
+
+    </html>
 `)
-//line templates/hello.qtpl:7
+//line templates/hello.qtpl:87
 }
 
-//line templates/hello.qtpl:7
-func WriteClones(qq422016 qtio422016.Writer, clones map[string][]clone_detect.Clone) {
-//line templates/hello.qtpl:7
+//line templates/hello.qtpl:87
+func WriteClones(qq422016 qtio422016.Writer, clonesGroupedByTypes map[string][]clone_detect.Clone) {
+//line templates/hello.qtpl:87
 	qw422016 := qt422016.AcquireWriter(qq422016)
-//line templates/hello.qtpl:7
-	StreamClones(qw422016, clones)
-//line templates/hello.qtpl:7
+//line templates/hello.qtpl:87
+	StreamClones(qw422016, clonesGroupedByTypes)
+//line templates/hello.qtpl:87
 	qt422016.ReleaseWriter(qw422016)
-//line templates/hello.qtpl:7
+//line templates/hello.qtpl:87
 }
 
-//line templates/hello.qtpl:7
-func Clones(clones map[string][]clone_detect.Clone) string {
-//line templates/hello.qtpl:7
+//line templates/hello.qtpl:87
+func Clones(clonesGroupedByTypes map[string][]clone_detect.Clone) string {
+//line templates/hello.qtpl:87
 	qb422016 := qt422016.AcquireByteBuffer()
-//line templates/hello.qtpl:7
-	WriteClones(qb422016, clones)
-//line templates/hello.qtpl:7
+//line templates/hello.qtpl:87
+	WriteClones(qb422016, clonesGroupedByTypes)
+//line templates/hello.qtpl:87
 	qs422016 := string(qb422016.B)
-//line templates/hello.qtpl:7
+//line templates/hello.qtpl:87
 	qt422016.ReleaseByteBuffer(qb422016)
-//line templates/hello.qtpl:7
+//line templates/hello.qtpl:87
 	return qs422016
-//line templates/hello.qtpl:7
-}
-
-//line templates/hello.qtpl:10
-func StreamGreetings(qw422016 *qt422016.Writer, names []string) {
-//line templates/hello.qtpl:10
-	qw422016.N().S(`
-    `)
-//line templates/hello.qtpl:11
-	qw422016.N().S(` <div id="container"> <h1>Greetings</h1> `)
-//line templates/hello.qtpl:15
-	if len(names) == 0 {
-//line templates/hello.qtpl:15
-		qw422016.N().S(` <p>Nobody to greet :(</p> `)
-//line templates/hello.qtpl:17
-		return
-//line templates/hello.qtpl:18
-	}
-//line templates/hello.qtpl:18
-	qw422016.N().S(` <ul> `)
-//line templates/hello.qtpl:20
-	for i, name := range names {
-//line templates/hello.qtpl:20
-		qw422016.N().S(` <li>`)
-//line templates/hello.qtpl:21
-		qw422016.N().D(i)
-//line templates/hello.qtpl:21
-		qw422016.N().S(` `)
-//line templates/hello.qtpl:21
-		streamhello(qw422016, name)
-//line templates/hello.qtpl:21
-		qw422016.N().S(`</li> `)
-//line templates/hello.qtpl:22
-	}
-//line templates/hello.qtpl:22
-	qw422016.N().S(` </ul> </div> `)
-//line templates/hello.qtpl:26
-	qw422016.N().S(`
-`)
-//line templates/hello.qtpl:27
-}
-
-//line templates/hello.qtpl:27
-func WriteGreetings(qq422016 qtio422016.Writer, names []string) {
-//line templates/hello.qtpl:27
-	qw422016 := qt422016.AcquireWriter(qq422016)
-//line templates/hello.qtpl:27
-	StreamGreetings(qw422016, names)
-//line templates/hello.qtpl:27
-	qt422016.ReleaseWriter(qw422016)
-//line templates/hello.qtpl:27
-}
-
-//line templates/hello.qtpl:27
-func Greetings(names []string) string {
-//line templates/hello.qtpl:27
-	qb422016 := qt422016.AcquireByteBuffer()
-//line templates/hello.qtpl:27
-	WriteGreetings(qb422016, names)
-//line templates/hello.qtpl:27
-	qs422016 := string(qb422016.B)
-//line templates/hello.qtpl:27
-	qt422016.ReleaseByteBuffer(qb422016)
-//line templates/hello.qtpl:27
-	return qs422016
-//line templates/hello.qtpl:27
-}
-
-//line templates/hello.qtpl:29
-func streamhello(qw422016 *qt422016.Writer, name string) {
-//line templates/hello.qtpl:29
-	qw422016.N().S(`
-	Hello, `)
-//line templates/hello.qtpl:30
-	qw422016.E().S(name)
-//line templates/hello.qtpl:30
-	qw422016.N().S(`!
-`)
-//line templates/hello.qtpl:31
-}
-
-//line templates/hello.qtpl:31
-func writehello(qq422016 qtio422016.Writer, name string) {
-//line templates/hello.qtpl:31
-	qw422016 := qt422016.AcquireWriter(qq422016)
-//line templates/hello.qtpl:31
-	streamhello(qw422016, name)
-//line templates/hello.qtpl:31
-	qt422016.ReleaseWriter(qw422016)
-//line templates/hello.qtpl:31
-}
-
-//line templates/hello.qtpl:31
-func hello(name string) string {
-//line templates/hello.qtpl:31
-	qb422016 := qt422016.AcquireByteBuffer()
-//line templates/hello.qtpl:31
-	writehello(qb422016, name)
-//line templates/hello.qtpl:31
-	qs422016 := string(qb422016.B)
-//line templates/hello.qtpl:31
-	qt422016.ReleaseByteBuffer(qb422016)
-//line templates/hello.qtpl:31
-	return qs422016
-//line templates/hello.qtpl:31
+//line templates/hello.qtpl:87
 }

@@ -86,9 +86,9 @@ func Analyze(out io.Writer, configPath string) int {
 	relevantType3Clones := filterClonesByLength(type3Clones, configuration.Settings.MinCloneLengths["level-3"])
 
 	clones := map[string][]clone_detect.Clone{
-		"TYPE 1": relevantType1Clones,
-		"TYPE 2": relevantType2Clones,
-		"TYPE 3": relevantType3Clones,
+		"1": relevantType1Clones,
+		"2": relevantType2Clones,
+		"3": relevantType3Clones,
 	}
 
 	for _, report := range configuration.Reports {
