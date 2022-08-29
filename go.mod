@@ -5,7 +5,7 @@ go 1.18
 require (
 	github.com/benjamintf1/unmarshalledmatchers v1.0.0
 	github.com/golang/mock v1.6.0
-	github.com/onsi/gomega v1.20.0
+	github.com/onsi/gomega v1.20.1
 	github.com/sergi/go-diff v1.2.0
 )
 
