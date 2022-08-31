@@ -47,31 +47,40 @@
                      aria-labelledby="nav-type-{%s cloneType %}-clones-tab">
                     <h3>Detected {%d len(clones) %} clone{% if len(clones) != 1 %}s{% endif %}</h3>
 
-                    {% for cloneIndex, _ := range clones %}
+                    {% for cloneIndex, clone := range clones %}
 
-
-                    <card class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                <a id="type_{%s cloneType %}_clone_{%d cloneIndex %}" href="#type_{%s cloneType %}_clone_{%d cloneIndex %}">
-                                    <span class="badge bg-secondary">Clone {%d cloneIndex %}</span>
-                                </a>
-                            </h5>
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">File</th>
-                                    <th scope="col">Lines</th>
-                                    <th scope="col">Content</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                abc
-                                </tbody>
-                            </table>
-                        </div>
-                    </card>
+                        <card class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <a id="type_{%s cloneType %}_clone_{%d cloneIndex %}" href="#type_{%s cloneType %}_clone_{%d cloneIndex %}">
+                                        <span class="badge bg-secondary">Clone {%d cloneIndex %}</span>
+                                    </a>
+                                </h5>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">File</th>
+                                            <th scope="col">Content</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">A</th>
+                                            <td>{%s clone.A %}
+                                            </td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">B</th>
+                                            <td>{%s clone.B %}
+                                            </td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </card>
 
                     {% endfor %}
 

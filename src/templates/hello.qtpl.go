@@ -104,65 +104,82 @@ func StreamClones(qw422016 *qt422016.Writer, clonesGroupedByTypes map[string][]c
 
                     `)
 //line templates/hello.qtpl:50
-		for cloneIndex, _ := range clones {
+		for cloneIndex, clone := range clones {
 //line templates/hello.qtpl:50
 			qw422016.N().S(`
 
-
-                    <card class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                <a id="type_`)
-//line templates/hello.qtpl:56
+                        <card class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <a id="type_`)
+//line templates/hello.qtpl:55
 			qw422016.E().S(cloneType)
-//line templates/hello.qtpl:56
+//line templates/hello.qtpl:55
 			qw422016.N().S(`_clone_`)
-//line templates/hello.qtpl:56
+//line templates/hello.qtpl:55
 			qw422016.N().D(cloneIndex)
-//line templates/hello.qtpl:56
+//line templates/hello.qtpl:55
 			qw422016.N().S(`" href="#type_`)
-//line templates/hello.qtpl:56
+//line templates/hello.qtpl:55
 			qw422016.E().S(cloneType)
-//line templates/hello.qtpl:56
+//line templates/hello.qtpl:55
 			qw422016.N().S(`_clone_`)
-//line templates/hello.qtpl:56
+//line templates/hello.qtpl:55
 			qw422016.N().D(cloneIndex)
-//line templates/hello.qtpl:56
+//line templates/hello.qtpl:55
 			qw422016.N().S(`">
-                                    <span class="badge bg-secondary">Clone `)
-//line templates/hello.qtpl:57
+                                        <span class="badge bg-secondary">Clone `)
+//line templates/hello.qtpl:56
 			qw422016.N().D(cloneIndex)
-//line templates/hello.qtpl:57
+//line templates/hello.qtpl:56
 			qw422016.N().S(`</span>
-                                </a>
-                            </h5>
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">File</th>
-                                    <th scope="col">Lines</th>
-                                    <th scope="col">Content</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                abc
-                                </tbody>
-                            </table>
-                        </div>
-                    </card>
+                                    </a>
+                                </h5>
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">File</th>
+                                        <th scope="col">Content</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">A</th>
+                                            <td>`)
+//line templates/hello.qtpl:70
+			qw422016.E().S(clone.A)
+//line templates/hello.qtpl:70
+			qw422016.N().S(`
+                                            </td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">B</th>
+                                            <td>`)
+//line templates/hello.qtpl:76
+			qw422016.E().S(clone.B)
+//line templates/hello.qtpl:76
+			qw422016.N().S(`
+                                            </td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </card>
 
                     `)
-//line templates/hello.qtpl:76
+//line templates/hello.qtpl:85
 		}
-//line templates/hello.qtpl:76
+//line templates/hello.qtpl:85
 		qw422016.N().S(`
 
                 </div>
             `)
-//line templates/hello.qtpl:79
+//line templates/hello.qtpl:88
 	}
-//line templates/hello.qtpl:79
+//line templates/hello.qtpl:88
 	qw422016.N().S(`
         </div>
 
@@ -172,31 +189,31 @@ func StreamClones(qw422016 *qt422016.Writer, clonesGroupedByTypes map[string][]c
 
     </html>
 `)
-//line templates/hello.qtpl:87
+//line templates/hello.qtpl:96
 }
 
-//line templates/hello.qtpl:87
+//line templates/hello.qtpl:96
 func WriteClones(qq422016 qtio422016.Writer, clonesGroupedByTypes map[string][]clone_detect.Clone) {
-//line templates/hello.qtpl:87
+//line templates/hello.qtpl:96
 	qw422016 := qt422016.AcquireWriter(qq422016)
-//line templates/hello.qtpl:87
+//line templates/hello.qtpl:96
 	StreamClones(qw422016, clonesGroupedByTypes)
-//line templates/hello.qtpl:87
+//line templates/hello.qtpl:96
 	qt422016.ReleaseWriter(qw422016)
-//line templates/hello.qtpl:87
+//line templates/hello.qtpl:96
 }
 
-//line templates/hello.qtpl:87
+//line templates/hello.qtpl:96
 func Clones(clonesGroupedByTypes map[string][]clone_detect.Clone) string {
-//line templates/hello.qtpl:87
+//line templates/hello.qtpl:96
 	qb422016 := qt422016.AcquireByteBuffer()
-//line templates/hello.qtpl:87
+//line templates/hello.qtpl:96
 	WriteClones(qb422016, clonesGroupedByTypes)
-//line templates/hello.qtpl:87
+//line templates/hello.qtpl:96
 	qs422016 := string(qb422016.B)
-//line templates/hello.qtpl:87
+//line templates/hello.qtpl:96
 	qt422016.ReleaseByteBuffer(qb422016)
-//line templates/hello.qtpl:87
+//line templates/hello.qtpl:96
 	return qs422016
-//line templates/hello.qtpl:87
+//line templates/hello.qtpl:96
 }

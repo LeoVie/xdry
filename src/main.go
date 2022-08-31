@@ -6,6 +6,7 @@ import (
 	"github.com/yosssi/gohtml"
 	"x-dry-go/src/internal/clone_detect"
 	"x-dry-go/src/internal/compare"
+	"x-dry-go/src/internal/service/aggregate"
 	"x-dry-go/src/templates"
 )
 
@@ -40,6 +41,71 @@ func main() {
 		"2": type1Clones,
 		"3": type1Clones,
 		"4": type1Clones,
+	}
+
+	cloneBundles := []aggregate.CloneBundle{
+		{
+			CloneType: 1,
+			AggregatedClones: []aggregate.AggregatedClone{
+				{
+					Content: "blablabla",
+					Instances: []aggregate.CloneInstance{
+						{
+							Path:  "foo.php",
+							Index: 10,
+						},
+						{
+							Path:  "bar.php",
+							Index: 0,
+						},
+					},
+				},
+				{
+					Content: "foooooo",
+					Instances: []aggregate.CloneInstance{
+						{
+							Path:  "foo.php",
+							Index: 0,
+						},
+						{
+							Path:  "bum.php",
+							Index: 0,
+						},
+					},
+				},
+			},
+		},
+		{
+			CloneType: 2,
+			AggregatedClones: []aggregate.AggregatedClone{
+				{
+					Content: "sdfgsdgsdffg",
+					Instances: []aggregate.CloneInstance{
+						{
+							Path:  "foo.php",
+							Index: 10,
+						},
+						{
+							Path:  "bar.php",
+							Index: 0,
+						},
+					},
+				},
+				{
+					Content: "xxxx1x1x1x1",
+					Instances: []aggregate.CloneInstance{
+						{
+							Path:  "foo.php",
+							Index: 0,
+						},
+						{
+							Path:  "bum.php",
+							Index: 0,
+						},
+					},
+				},
+			},
+		},
 	}
 
 	// qtc creates Write* function for each template function.
