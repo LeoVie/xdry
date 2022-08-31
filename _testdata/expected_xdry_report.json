@@ -1,374 +1,296 @@
-{
-  "TYPE 1": [
-    {
-      "A": "%PROJECT_PATH%/_testdata/php/bar.php",
-      "B": "%PROJECT_PATH%/_testdata/php/bum.php",
-      "Matches": [
-        {
-          "Content": "$x = 10",
-          "IndexA": 0,
-          "IndexB": 0
-        },
-        {
-          "Content": " ; $",
-          "IndexA": 7,
-          "IndexB": 8
-        },
-        {
-          "Content": " = 50 ; print ( $",
-          "IndexA": 12,
-          "IndexB": 13
-        },
-        {
-          "Content": " ) ;",
-          "IndexA": 30,
-          "IndexB": 31
-        }
-      ]
-    },
-    {
-      "A": "%PROJECT_PATH%/_testdata/php/bum.php",
-      "B": "%PROJECT_PATH%/_testdata/php/foo.php",
-      "Matches": [
-        {
-          "Content": "$x = 10",
-          "IndexA": 0,
-          "IndexB": 0
-        },
-        {
-          "Content": " ; $",
-          "IndexA": 8,
-          "IndexB": 7
-        },
-        {
-          "Content": " = 50 ; print ( $",
-          "IndexA": 13,
-          "IndexB": 12
-        },
-        {
-          "Content": " ) ;",
-          "IndexA": 31,
-          "IndexB": 30
-        }
-      ]
-    },
-    {
-      "A": "%PROJECT_PATH%/_testdata/php/bla.php",
-      "B": "%PROJECT_PATH%/_testdata/php/foo.php",
-      "Matches": [
-        {
-          "Content": "$y = 50 ; print ( $y ) ;",
-          "IndexA": 0,
-          "IndexB": 10
-        }
-      ]
-    },
-    {
-      "A": "%PROJECT_PATH%/_testdata/php/bar.php",
-      "B": "%PROJECT_PATH%/_testdata/php/foo.php",
-      "Matches": [
-        {
-          "Content": "$x = 10 ; $y = 50 ; print ( $y ) ;",
-          "IndexA": 0,
-          "IndexB": 0
-        }
-      ]
-    },
-    {
-      "A": "%PROJECT_PATH%/_testdata/php/bar.php",
-      "B": "%PROJECT_PATH%/_testdata/php/bla.php",
-      "Matches": [
-        {
-          "Content": "$y = 50 ; print ( $y ) ;",
-          "IndexA": 10,
-          "IndexB": 0
-        }
-      ]
-    },
-    {
-      "A": "%PROJECT_PATH%/_testdata/php/bla.php",
-      "B": "%PROJECT_PATH%/_testdata/php/bum.php",
-      "Matches": [
-        {
-          "Content": "$",
-          "IndexA": 0,
-          "IndexB": 0
-        },
-        {
-          "Content": " = 50 ; print ( $",
-          "IndexA": 2,
-          "IndexB": 13
-        },
-        {
-          "Content": " ) ;",
-          "IndexA": 20,
-          "IndexB": 31
-        }
-      ]
-    },
-    {
-      "A": "%PROJECT_PATH%/_testdata/javascript/bar.js",
-      "B": "%PROJECT_PATH%/_testdata/javascript/bla.js",
-      "Matches": [
-        {
-          "Content": "const y = 50 ; \n console . log ( y ) ; \n",
-          "IndexA": 17,
-          "IndexB": 0
-        }
-      ]
-    },
-    {
-      "A": "%PROJECT_PATH%/_testdata/javascript/bar.js",
-      "B": "%PROJECT_PATH%/_testdata/javascript/foo.js",
-      "Matches": [
-        {
-          "Content": "const x = 10 ; \n const y = 50 ; \n console . log ( y ) ; \n",
-          "IndexA": 0,
-          "IndexB": 0
-        }
-      ]
-    },
-    {
-      "A": "%PROJECT_PATH%/_testdata/javascript/bla.js",
-      "B": "%PROJECT_PATH%/_testdata/javascript/foo.js",
-      "Matches": [
-        {
-          "Content": "const y = 50 ; \n console . log ( y ) ; \n",
-          "IndexA": 0,
-          "IndexB": 17
-        }
-      ]
-    }
-  ],
-  "TYPE 2": [
-    {
-      "A": "%PROJECT_PATH%/_testdata/php/bar.php",
-      "B": "%PROJECT_PATH%/_testdata/php/foo.php",
-      "Matches": [
-        {
-          "Content": "$x0 = 1 ; $x1 = 1 ; print ( $x1 ) ;",
-          "IndexA": 0,
-          "IndexB": 0
-        }
-      ]
-    },
-    {
-      "A": "%PROJECT_PATH%/_testdata/php/bum.php",
-      "B": "%PROJECT_PATH%/_testdata/php/foo.php",
-      "Matches": [
-        {
-          "Content": "$x0 = 1 ; $x1 = 1 ; print ( $x1 ) ;",
-          "IndexA": 0,
-          "IndexB": 0
-        }
-      ]
-    },
-    {
-      "A": "%PROJECT_PATH%/_testdata/php/bar.php",
-      "B": "%PROJECT_PATH%/_testdata/php/bum.php",
-      "Matches": [
-        {
-          "Content": "$x0 = 1 ; $x1 = 1 ; print ( $x1 ) ;",
-          "IndexA": 0,
-          "IndexB": 0
-        }
-      ]
-    },
-    {
-      "A": "%PROJECT_PATH%/_testdata/php/bla.php",
-      "B": "%PROJECT_PATH%/_testdata/php/bum.php",
-      "Matches": [
-        {
-          "Content": "$x0 = 1 ; ",
-          "IndexA": 0,
-          "IndexB": 0
-        },
-        {
-          "Content": "print ( $x",
-          "IndexA": 10,
-          "IndexB": 20
-        },
-        {
-          "Content": " ) ;",
-          "IndexA": 21,
-          "IndexB": 31
-        }
-      ]
-    },
-    {
-      "A": "%PROJECT_PATH%/_testdata/php/bla.php",
-      "B": "%PROJECT_PATH%/_testdata/php/foo.php",
-      "Matches": [
-        {
-          "Content": "$x0 = 1 ; ",
-          "IndexA": 0,
-          "IndexB": 0
-        },
-        {
-          "Content": "print ( $x",
-          "IndexA": 10,
-          "IndexB": 20
-        },
-        {
-          "Content": " ) ;",
-          "IndexA": 21,
-          "IndexB": 31
-        }
-      ]
-    },
-    {
-      "A": "%PROJECT_PATH%/_testdata/php/bar.php",
-      "B": "%PROJECT_PATH%/_testdata/php/bla.php",
-      "Matches": [
-        {
-          "Content": "$x0 = 1 ; ",
-          "IndexA": 0,
-          "IndexB": 0
-        },
-        {
-          "Content": "print ( $x",
-          "IndexA": 20,
-          "IndexB": 10
-        },
-        {
-          "Content": " ) ;",
-          "IndexA": 31,
-          "IndexB": 21
-        }
-      ]
-    },
-    {
-      "A": "%PROJECT_PATH%/_testdata/php/bar.php",
-      "B": "%PROJECT_PATH%/_testdata/php/foo.php",
-      "Matches": [
-        {
-          "Content": "$x0 = 1 ; $x1 = 1 ; print ( $x1 ) ;",
-          "IndexA": 0,
-          "IndexB": 0
-        }
-      ]
-    },
-    {
-      "A": "%PROJECT_PATH%/_testdata/php/bla.php",
-      "B": "%PROJECT_PATH%/_testdata/php/bum.php",
-      "Matches": [
-        {
-          "Content": "$x0 = 1 ; print ( $x ) ;",
-          "IndexA": 0,
-          "IndexB": 0
-        }
-      ]
-    },
-    {
-      "A": "%PROJECT_PATH%/_testdata/php/bar.php",
-      "B": "%PROJECT_PATH%/_testdata/php/bum.php",
-      "Matches": [
-        {
-          "Content": "$x0 = 1 ; $x1 = 1 ; print ( $x1 ) ;",
-          "IndexA": 0,
-          "IndexB": 0
-        }
-      ]
-    },
-    {
-      "A": "%PROJECT_PATH%/_testdata/php/bla.php",
-      "B": "%PROJECT_PATH%/_testdata/php/foo.php",
-      "Matches": [
-        {
-          "Content": "$x0 = 1 ; print ( $x ) ;",
-          "IndexA": 0,
-          "IndexB": 0
-        }
-      ]
-    },
-    {
-      "A": "%PROJECT_PATH%/_testdata/php/bar.php",
-      "B": "%PROJECT_PATH%/_testdata/php/bla.php",
-      "Matches": [
-        {
-          "Content": "$x0 = 1 ; print ( $x ) ;",
-          "IndexA": 0,
-          "IndexB": 0
-        }
-      ]
-    },
-    {
-      "A": "%PROJECT_PATH%/_testdata/php/bum.php",
-      "B": "%PROJECT_PATH%/_testdata/php/foo.php",
-      "Matches": [
-        {
-          "Content": "$x0 = 1 ; $x1 = 1 ; print ( $x1 ) ;",
-          "IndexA": 0,
-          "IndexB": 0
-        }
-      ]
-    },
-    {
-      "A": "%PROJECT_PATH%/_testdata/javascript/bla.js",
-      "B": "%PROJECT_PATH%/_testdata/javascript/foo.js",
-      "Matches": [
-        {
-          "Content": "const x = 1 ; \n x . x ( x ) ; \n",
-          "IndexA": 0,
-          "IndexB": 16
-        }
-      ]
-    },
-    {
-      "A": "%PROJECT_PATH%/_testdata/javascript/bar.js",
-      "B": "%PROJECT_PATH%/_testdata/javascript/bla.js",
-      "Matches": [
-        {
-          "Content": "const x = 1 ; \n x . x ( x ) ; \n",
-          "IndexA": 16,
-          "IndexB": 0
-        }
-      ]
-    },
-    {
-      "A": "%PROJECT_PATH%/_testdata/javascript/bar.js",
-      "B": "%PROJECT_PATH%/_testdata/javascript/foo.js",
-      "Matches": [
-        {
-          "Content": "const x = 1 ; \n const x = 1 ; \n x . x ( x ) ; \n",
-          "IndexA": 0,
-          "IndexB": 0
-        }
-      ]
-    },
-    {
-      "A": "%PROJECT_PATH%/_testdata/javascript/bla.js",
-      "B": "%PROJECT_PATH%/_testdata/javascript/foo.js",
-      "Matches": [
-        {
-          "Content": "const x = 1 ; \n x . x ( x ) ; \n",
-          "IndexA": 0,
-          "IndexB": 16
-        }
-      ]
-    },
-    {
-      "A": "%PROJECT_PATH%/_testdata/javascript/bar.js",
-      "B": "%PROJECT_PATH%/_testdata/javascript/bla.js",
-      "Matches": [
-        {
-          "Content": "const x = 1 ; \n x . x ( x ) ; \n",
-          "IndexA": 16,
-          "IndexB": 0
-        }
-      ]
-    },
-    {
-      "A": "%PROJECT_PATH%/_testdata/javascript/bar.js",
-      "B": "%PROJECT_PATH%/_testdata/javascript/foo.js",
-      "Matches": [
-        {
-          "Content": "const x = 1 ; \n const x = 1 ; \n x . x ( x ) ; \n",
-          "IndexA": 0,
-          "IndexB": 0
-        }
-      ]
-    }
-  ],
-  "TYPE 3": null
-}
+[
+  {
+    "CloneType": 1,
+    "AggregatedClones": [
+      {
+        "Content": "$y = 50 ; print ( $y ) ;",
+        "Instances": [
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/bla.php",
+            "Index": 0
+          },
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/foo.php",
+            "Index": 10
+          },
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/bar.php",
+            "Index": 10
+          }
+        ]
+      },
+      {
+        "Content": "$x = 10",
+        "Instances": [
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/bum.php",
+            "Index": 0
+          },
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/foo.php",
+            "Index": 0
+          },
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/bar.php",
+            "Index": 0
+          }
+        ]
+      },
+      {
+        "Content": " ; $",
+        "Instances": [
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/bum.php",
+            "Index": 8
+          },
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/foo.php",
+            "Index": 7
+          },
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/bar.php",
+            "Index": 7
+          }
+        ]
+      },
+      {
+        "Content": " = 50 ; print ( $",
+        "Instances": [
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/bum.php",
+            "Index": 13
+          },
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/foo.php",
+            "Index": 12
+          },
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/bar.php",
+            "Index": 12
+          },
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/bla.php",
+            "Index": 2
+          }
+        ]
+      },
+      {
+        "Content": " ) ;",
+        "Instances": [
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/bum.php",
+            "Index": 31
+          },
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/foo.php",
+            "Index": 30
+          },
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/bar.php",
+            "Index": 30
+          },
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/bla.php",
+            "Index": 20
+          }
+        ]
+      },
+      {
+        "Content": "$",
+        "Instances": [
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/bla.php",
+            "Index": 0
+          },
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/bum.php",
+            "Index": 0
+          }
+        ]
+      },
+      {
+        "Content": "$x = 10 ; $y = 50 ; print ( $y ) ;",
+        "Instances": [
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/bar.php",
+            "Index": 0
+          },
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/foo.php",
+            "Index": 0
+          }
+        ]
+      },
+      {
+        "Content": "const y = 50 ; \n console . log ( y ) ; \n",
+        "Instances": [
+          {
+            "Path": "%PROJECT_PATH%/_testdata/javascript/bla.js",
+            "Index": 0
+          },
+          {
+            "Path": "%PROJECT_PATH%/_testdata/javascript/foo.js",
+            "Index": 17
+          },
+          {
+            "Path": "%PROJECT_PATH%/_testdata/javascript/bar.js",
+            "Index": 17
+          }
+        ]
+      },
+      {
+        "Content": "const x = 10 ; \n const y = 50 ; \n console . log ( y ) ; \n",
+        "Instances": [
+          {
+            "Path": "%PROJECT_PATH%/_testdata/javascript/bar.js",
+            "Index": 0
+          },
+          {
+            "Path": "%PROJECT_PATH%/_testdata/javascript/foo.js",
+            "Index": 0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "CloneType": 2,
+    "AggregatedClones": [
+      {
+        "Content": "$x0 = 1 ; $x1 = 1 ; print ( $x1 ) ;",
+        "Instances": [
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/bar.php",
+            "Index": 0
+          },
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/bum.php",
+            "Index": 0
+          },
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/foo.php",
+            "Index": 0
+          }
+        ]
+      },
+      {
+        "Content": "$x0 = 1 ; ",
+        "Instances": [
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/bla.php",
+            "Index": 0
+          },
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/foo.php",
+            "Index": 0
+          },
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/bum.php",
+            "Index": 0
+          },
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/bar.php",
+            "Index": 0
+          }
+        ]
+      },
+      {
+        "Content": "print ( $x",
+        "Instances": [
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/bla.php",
+            "Index": 10
+          },
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/foo.php",
+            "Index": 20
+          },
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/bum.php",
+            "Index": 20
+          },
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/bar.php",
+            "Index": 20
+          }
+        ]
+      },
+      {
+        "Content": " ) ;",
+        "Instances": [
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/bla.php",
+            "Index": 21
+          },
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/foo.php",
+            "Index": 31
+          },
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/bum.php",
+            "Index": 31
+          },
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/bar.php",
+            "Index": 31
+          }
+        ]
+      },
+      {
+        "Content": "$x0 = 1 ; print ( $x ) ;",
+        "Instances": [
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/bla.php",
+            "Index": 0
+          },
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/bum.php",
+            "Index": 0
+          },
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/foo.php",
+            "Index": 0
+          },
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/bar.php",
+            "Index": 0
+          }
+        ]
+      },
+      {
+        "Content": "const x = 1 ; \n x . x ( x ) ; \n",
+        "Instances": [
+          {
+            "Path": "%PROJECT_PATH%/_testdata/javascript/bla.js",
+            "Index": 0
+          },
+          {
+            "Path": "%PROJECT_PATH%/_testdata/javascript/foo.js",
+            "Index": 16
+          },
+          {
+            "Path": "%PROJECT_PATH%/_testdata/javascript/bar.js",
+            "Index": 16
+          }
+        ]
+      },
+      {
+        "Content": "const x = 1 ; \n const x = 1 ; \n x . x ( x ) ; \n",
+        "Instances": [
+          {
+            "Path": "%PROJECT_PATH%/_testdata/javascript/bar.js",
+            "Index": 0
+          },
+          {
+            "Path": "%PROJECT_PATH%/_testdata/javascript/foo.js",
+            "Index": 0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "CloneType": 3,
+    "AggregatedClones": []
+  }
+]
