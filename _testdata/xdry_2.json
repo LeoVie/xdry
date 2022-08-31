@@ -10,6 +10,10 @@
     {
       "type": "json",
       "path": "generated/reports/xdry_report.json"
+    },
+    {
+      "type": "html",
+      "path": "generated/reports/xdry_report.html"
     }
   ],
   "directories": [
@@ -20,6 +24,7 @@
     {
       "level": 1,
       "extension": ".php",
+      "language": "php",
       "command": "docker",
       "args": [
         "run",
@@ -34,6 +39,7 @@
     {
       "level": 2,
       "extension": ".php",
+      "language": "php",
       "command": "docker",
       "args": [
         "run",
@@ -48,6 +54,7 @@
     {
       "level": 1,
       "extension": ".js",
+      "language": "javascript",
       "command": "docker",
       "args": [
         "run",
@@ -62,6 +69,7 @@
     {
       "level": 2,
       "extension": ".js",
+      "language": "javascript",
       "command": "docker",
       "args": [
         "run",

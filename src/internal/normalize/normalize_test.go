@@ -7,6 +7,7 @@ import (
 	"testing"
 	"x-dry-go/src/_mocks/cli"
 	"x-dry-go/src/internal/config"
+	"x-dry-go/src/internal/structs"
 )
 
 func TestNormalizeErrorsWhenNoNormalizerFoundForFileExtension(t *testing.T) {
@@ -50,7 +51,11 @@ func TestNormalizeErrorsWhenNormalizerErrors(t *testing.T) {
 func TestNormalize(t *testing.T) {
 	g := NewGomegaWithT(t)
 
-	want := "output of the normalizer command"
+	want := structs.File{
+		Path:     "foo.txt",
+		Content:  "output of the normalizer command",
+		Language: "plaintext",
+	}
 
 	ctrl := gomock.NewController(t)
 
@@ -67,6 +72,7 @@ func TestNormalize(t *testing.T) {
 	normalizers[".txt"] = config.Normalizer{
 		Level:     1,
 		Extension: ".txt",
+		Language:  "plaintext",
 		Command:   "pwd",
 		Args:      []string{},
 	}

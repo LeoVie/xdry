@@ -1,0 +1,87 @@
+{% import "x-dry-go/src/internal/service/aggregate" %}
+
+{% func Report(cloneBundles []aggregate.CloneBundle) %}
+    <!doctype html>
+    <html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+              integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" rel="stylesheet"
+              crossorigin="anonymous" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/default.min.css"
+              rel="stylesheet" />
+        <title>xdry report</title>
+    </head>
+    <body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-10">
+                <h1>xdry report</h1>
+            </div>
+            <div class="col-2 text-end">
+                <a class="btn btn-success mt-3" href="http://xdry.leovie.de" target="_blank">xdry.leovie.de</a>
+            </div>
+        </div>
+
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            {% for _, cloneBundle := range cloneBundles %}
+                <button class="nav-link{% if cloneBundle.CloneType == 1 %} active{% endif %}" id="nav-type-{%d cloneBundle.CloneType %}-clones-tab" data-bs-toggle="tab"
+                        data-bs-target="#nav-type-{%d cloneBundle.CloneType %}-clones">Type {%d cloneBundle.CloneType %} Clones
+                </button>
+            {% endfor %}
+        </div>
+        <div class="tab-content" id="nav-tabContent">
+            {% for _, cloneBundle := range cloneBundles %}
+                <div class="tab-pane fade show{% if cloneBundle.CloneType == 1 %} active{% endif %}"
+                     id="nav-type-{%d cloneBundle.CloneType %}-clones"
+                     role="tabpanel"
+                     aria-labelledby="nav-type-{%d cloneBundle.CloneType %}-clones-tab">
+
+                    <h3>Detected {%d len(cloneBundle.AggregatedClones) %} clone{% if len(cloneBundle.AggregatedClones) != 1 %}s{% endif %}</h3>
+
+                    <div class="row">
+                        {% for cloneIndex, aggregatedClone := range cloneBundle.AggregatedClones %}
+                            <div class="col-4">
+                                <card class="card">
+                                    <div class="card-body">
+                                        <a id="type_{%d cloneBundle.CloneType %}_clone_{%d cloneIndex %}" href="#type_{%d cloneBundle.CloneType %}_clone_{%d cloneIndex %}">
+                                            <span class="badge bg-secondary">Clone {%d cloneIndex %}</span>
+                                        </a>
+                                        <pre><code class="language-{%s aggregatedClone.Language %}">{%s aggregatedClone.Content %}</code></pre>
+                                        <table class="table">
+                                            <thead>
+                                                 <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">File</th>
+                                                    <th scope="col">File position</th>
+                                                 </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for cloneInstanceIndex, cloneInstance := range aggregatedClone.Instances %}
+                                                    <tr>
+                                                        <th scope="row">{%d cloneInstanceIndex %}</th>
+                                                        <td>{%s cloneInstance.Path %}</td>
+                                                        <td>{%d cloneInstance.Index %}</td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </card>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    </body>
+    </html>
+{% endfunc %}

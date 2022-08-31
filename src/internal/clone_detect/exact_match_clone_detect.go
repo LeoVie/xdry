@@ -10,19 +10,19 @@ import (
 	"x-dry-go/src/internal/compare"
 	"x-dry-go/src/internal/config"
 	"x-dry-go/src/internal/normalize"
+	"x-dry-go/src/internal/structs"
 )
 
 type Clone = struct {
-	A       string
-	B       string
-	Matches []compare.Match
+	A        string
+	B        string
+	Language string
+	Matches  []compare.Match
 }
 
 type Pair = struct {
-	APath    string
-	AContent string
-	BPath    string
-	BContent string
+	AFile structs.File
+	BFile structs.File
 }
 
 func DetectInDirectory(directory string, level int, levelNormalizers map[int][]config.Normalizer) (error, []Clone) {
@@ -46,7 +46,7 @@ func DetectInDirectory(directory string, level int, levelNormalizers map[int][]c
 		normalizeLevel = 2
 	}
 
-	normalizedFileContents := normalizeFiles(
+	normalizedFiles := normalizeFiles(
 		normalizeLevel,
 		levelNormalizers,
 		filepaths,
@@ -65,32 +65,30 @@ func DetectInDirectory(directory string, level int, levelNormalizers map[int][]c
 		return fmt.Errorf("no compare function found for level %d", level), []Clone{}
 	}
 
-	clones := detectClones(normalizedFileContents, compareFunc)
+	clones := detectClones(normalizedFiles, compareFunc)
 
 	return nil, clones
 }
 
-func detectClones(normalizedFileContents map[string]string, compareFunc func(a string, b string) []compare.Match) []Clone {
+func detectClones(normalizedFiles map[string]structs.File, compareFunc func(a string, b string) []compare.Match) []Clone {
 	pairs := make(map[string]Pair)
 
-	for aPath, aContent := range normalizedFileContents {
-		for bPath, bContent := range normalizedFileContents {
+	for aPath, aFile := range normalizedFiles {
+		for bPath, bFile := range normalizedFiles {
 			if aPath == bPath {
 				continue
 			}
 
-			firstPath, secondPath, firstContent, secondContent := orderPathsAndContents(aPath, aContent, bPath, bContent)
+			firstFile, secondFile := orderFiles(aFile, bFile)
 
-			hash := buildCloneHash(firstPath, secondPath)
+			hash := buildCloneHash(firstFile.Path, secondFile.Path)
 			if _, ok := pairs[hash]; ok {
 				continue
 			}
 
 			pairs[hash] = Pair{
-				APath:    firstPath,
-				AContent: firstContent,
-				BPath:    secondPath,
-				BContent: secondContent,
+				AFile: firstFile,
+				BFile: secondFile,
 			}
 		}
 	}
@@ -104,10 +102,10 @@ func detectClones(normalizedFileContents map[string]string, compareFunc func(a s
 	for _, pair := range pairs {
 		clonesWg.Add(1)
 
-		go func(aPath string, aContent string, bPath string, bContent string) {
+		go func(pair Pair) {
 			defer clonesWg.Done()
 
-			matches := compareFunc(aContent, bContent)
+			matches := compareFunc(pair.AFile.Content, pair.BFile.Content)
 
 			if len(matches) == 0 {
 				return
@@ -115,40 +113,41 @@ func detectClones(normalizedFileContents map[string]string, compareFunc func(a s
 
 			clonesMutex.Lock()
 			clones = append(clones, Clone{
-				A:       aPath,
-				B:       bPath,
-				Matches: matches,
+				A:        pair.AFile.Path,
+				B:        pair.BFile.Path,
+				Language: pair.AFile.Language,
+				Matches:  matches,
 			})
 			clonesMutex.Unlock()
-		}(pair.APath, pair.AContent, pair.BPath, pair.BContent)
+		}(pair)
 	}
 
 	clonesWg.Wait()
 	return clones
 }
 
-func orderPathsAndContents(aPath string, aContent string, bPath string, bContent string) (string, string, string, string) {
-	if aPath < bPath {
-		return aPath, bPath, aContent, bContent
+func orderFiles(aFile structs.File, bFile structs.File) (structs.File, structs.File) {
+	if aFile.Path < bFile.Path {
+		return aFile, bFile
 	}
 
-	return bPath, aPath, bContent, aContent
+	return bFile, aFile
 }
 
 func normalizeFiles(
 	level int,
 	levelNormalizers map[int][]config.Normalizer,
 	filepaths []string,
-) map[string]string {
+) map[string]structs.File {
 	var (
-		normalizedFileContentsMutex sync.Mutex
-		normalizedFileContents      = make(map[string]string)
+		normalizedFilesMutex sync.Mutex
+		normalizedFiles      = make(map[string]structs.File)
 	)
 
 	normalizers, ok := levelNormalizers[level]
 	if !ok {
 		log.Printf("No normalizers configured for level %d\n", level)
-		return normalizedFileContents
+		return normalizedFiles
 	}
 
 	mappedNormalizers := make(map[string]config.Normalizer)
@@ -167,22 +166,22 @@ func normalizeFiles(
 		go func(path string, mappedNormalizers map[string]config.Normalizer) {
 			defer wg.Done()
 
-			err, normalizedFileContent := normalize.Normalize(path, mappedNormalizers, cli.NewCommandExecutor())
+			err, normalizedFile := normalize.Normalize(path, mappedNormalizers, cli.NewCommandExecutor())
 
 			if err != nil {
 				fmt.Println(err)
 			}
 
-			normalizedFileContentsMutex.Lock()
-			normalizedFileContents[path] = normalizedFileContent
-			normalizedFileContentsMutex.Unlock()
+			normalizedFilesMutex.Lock()
+			normalizedFiles[path] = normalizedFile
+			normalizedFilesMutex.Unlock()
 
 			<-semaphore
 		}(path, mappedNormalizers)
 	}
 	wg.Wait()
 
-	return normalizedFileContents
+	return normalizedFiles
 }
 
 func buildCloneHash(aPath string, bPath string) string {
