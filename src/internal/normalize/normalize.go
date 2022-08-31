@@ -6,22 +6,27 @@ import (
 	"strings"
 	"x-dry-go/src/internal/cli"
 	"x-dry-go/src/internal/config"
+	"x-dry-go/src/internal/structs"
 )
 
-func Normalize(path string, normalizers map[string]config.Normalizer, commandExecutor cli.CommandExecutor) (error, string) {
+func Normalize(path string, normalizers map[string]config.Normalizer, commandExecutor cli.CommandExecutor) (error, structs.File) {
 	err, normalizer := findNormalizeImplementation(path, normalizers)
 
 	if err != nil {
-		return err, ""
+		return err, structs.File{}
 	}
 
 	commandOutput, err := commandExecutor.Execute(normalizer.Command, hydrateArgs(path, normalizer))
 
 	if err != nil {
-		return err, ""
+		return err, structs.File{}
 	}
 
-	return nil, commandOutput
+	return nil, structs.File{
+		Path:     path,
+		Content:  commandOutput,
+		Language: normalizer.Language,
+	}
 }
 
 func findNormalizeImplementation(

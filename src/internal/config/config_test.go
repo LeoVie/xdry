@@ -33,6 +33,7 @@ func TestParseConfig(t *testing.T) {
 			{
 				Level:     1,
 				Extension: ".php",
+				Language:  "php",
 				Command:   "php",
 				Args: []string{
 					"%FILEPATH%",
@@ -42,6 +43,6 @@ func TestParseConfig(t *testing.T) {
 	}
 
 	_, actual := ParseConfig(configPath, cwd)
-	
+
 	g.Expect(actual).To(Equal(&want))
 }

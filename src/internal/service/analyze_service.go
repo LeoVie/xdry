@@ -103,6 +103,14 @@ func Analyze(out io.Writer, configPath string) int {
 
 				return CommandFailure
 			}
+		} else if report.Type == "html" {
+			err := reporter.WriteHtmlReport(cloneBundles, report)
+
+			if err != nil {
+				fmt.Fprintln(out, err)
+
+				return CommandFailure
+			}
 		}
 	}
 
@@ -135,9 +143,10 @@ func filterClonesByLength(clones []clone_detect.Clone, minLength int) []clone_de
 		}
 
 		filtered = append(filtered, clone_detect.Clone{
-			A:       clone.A,
-			B:       clone.B,
-			Matches: filteredMatches,
+			A:        clone.A,
+			B:        clone.B,
+			Language: clone.Language,
+			Matches:  filteredMatches,
 		})
 	}
 

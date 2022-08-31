@@ -27,6 +27,7 @@ type Report struct {
 type Normalizer struct {
 	Level     int      `json:"level"`
 	Extension string   `json:"extension"`
+	Language  string   `json:"language"`
 	Command   string   `json:"command"`
 	Args      []string `json:"args"`
 }

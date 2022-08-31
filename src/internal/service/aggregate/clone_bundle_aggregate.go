@@ -3,12 +3,14 @@ package aggregate
 import "x-dry-go/src/internal/clone_detect"
 
 type CloneInstance struct {
-	Path  string
-	Index int
+	Path     string
+	Language string
+	Index    int
 }
 
 type AggregatedClone struct {
 	Content   string
+	Language  string
 	Instances []CloneInstance
 }
 
@@ -33,16 +35,18 @@ func AggregateCloneBundles(clones map[int][]clone_detect.Clone) []CloneBundle {
 						addedToExistingAggregatedClone = true
 
 						cloneInstance := CloneInstance{
-							Path:  clone.A,
-							Index: match.IndexA,
+							Path:     clone.A,
+							Language: clone.Language,
+							Index:    match.IndexA,
 						}
 						if !containsCloneInstance(cloneInstance, aggregatedClones[aggregatedCloneKey].Instances) {
 							aggregatedClones[aggregatedCloneKey].Instances = append(aggregatedClones[aggregatedCloneKey].Instances, cloneInstance)
 						}
 
 						cloneInstance = CloneInstance{
-							Path:  clone.B,
-							Index: match.IndexB,
+							Path:     clone.B,
+							Language: clone.Language,
+							Index:    match.IndexB,
 						}
 						if !containsCloneInstance(cloneInstance, aggregatedClones[aggregatedCloneKey].Instances) {
 							aggregatedClones[aggregatedCloneKey].Instances = append(aggregatedClones[aggregatedCloneKey].Instances, cloneInstance)
@@ -52,15 +56,18 @@ func AggregateCloneBundles(clones map[int][]clone_detect.Clone) []CloneBundle {
 
 				if !addedToExistingAggregatedClone {
 					aggregatedClones = append(aggregatedClones, AggregatedClone{
-						Content: match.Content,
+						Content:  match.Content,
+						Language: clone.Language,
 						Instances: []CloneInstance{
 							{
-								Path:  clone.A,
-								Index: match.IndexA,
+								Path:     clone.A,
+								Language: clone.Language,
+								Index:    match.IndexA,
 							},
 							{
-								Path:  clone.B,
-								Index: match.IndexB,
+								Path:     clone.B,
+								Language: clone.Language,
+								Index:    match.IndexB,
 							},
 						},
 					})
