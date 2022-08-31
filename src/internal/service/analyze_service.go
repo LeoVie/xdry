@@ -10,6 +10,7 @@ import (
 	"x-dry-go/src/internal/clone_detect"
 	"x-dry-go/src/internal/compare"
 	"x-dry-go/src/internal/config"
+	"x-dry-go/src/internal/service/aggregate"
 	"x-dry-go/src/internal/service/reporter"
 )
 
@@ -85,15 +86,17 @@ func Analyze(out io.Writer, configPath string) int {
 	relevantType2Clones := filterClonesByLength(type2Clones, configuration.Settings.MinCloneLengths["level-2"])
 	relevantType3Clones := filterClonesByLength(type3Clones, configuration.Settings.MinCloneLengths["level-3"])
 
-	clones := map[string][]clone_detect.Clone{
-		"TYPE 1": relevantType1Clones,
-		"TYPE 2": relevantType2Clones,
-		"TYPE 3": relevantType3Clones,
+	clones := map[int][]clone_detect.Clone{
+		1: relevantType1Clones,
+		2: relevantType2Clones,
+		3: relevantType3Clones,
 	}
+
+	cloneBundles := aggregate.AggregateCloneBundles(clones)
 
 	for _, report := range configuration.Reports {
 		if report.Type == "json" {
-			err := reporter.WriteJsonReport(clones, report)
+			err := reporter.WriteJsonReport(cloneBundles, report)
 
 			if err != nil {
 				fmt.Fprintln(out, err)
