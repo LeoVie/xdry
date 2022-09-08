@@ -24,6 +24,7 @@ func TestParseConfig(t *testing.T) {
 				"level-1": 10,
 				"level-2": 20,
 			},
+			LogPath: path.Join(cwd, "test", "_testdata", "xdry.log"),
 		},
 		Directories: []string{
 			path.Join(cwd, "test", "_testdata", "php"),

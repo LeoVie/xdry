@@ -6,6 +6,7 @@ require (
 	github.com/benjamintf1/unmarshalledmatchers v1.0.0
 	github.com/golang/mock v1.6.0
 	github.com/onsi/gomega v1.20.2
+	github.com/schollz/progressbar/v3 v3.10.1
 	github.com/sergi/go-diff v1.2.0
 	github.com/valyala/quicktemplate v1.7.0
 	github.com/yosssi/gohtml v0.0.0-20201013000340-ee4748c638f4
@@ -13,11 +14,16 @@ require (
 
 require (
 	github.com/google/go-cmp v0.5.8 // indirect
+	github.com/mattn/go-runewidth v0.0.13 // indirect
+	github.com/mitchellh/colorstring v0.0.0-20190213212951-d06e56a500db // indirect
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
 	github.com/onsi/ginkgo v1.16.5 // indirect
+	github.com/rivo/uniseg v0.2.0 // indirect
 	github.com/stretchr/testify v1.8.0 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	golang.org/x/net v0.0.0-20220826154423-83b083e8dc8b // indirect
+	golang.org/x/sys v0.0.0-20220829200755-d48e67d00261 // indirect
+	golang.org/x/term v0.0.0-20220722155259-a9ba230a4035 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f // indirect
 	gopkg.in/yaml.v2 v2.3.0 // indirect

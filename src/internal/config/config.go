@@ -2,6 +2,7 @@ package config
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"os"
 	"path"
@@ -17,6 +18,7 @@ type Config struct {
 
 type Settings struct {
 	MinCloneLengths map[string]int `json:"minCloneLengths"`
+	LogPath         string         `json:"logPath"`
 }
 
 type Report struct {
@@ -47,6 +49,7 @@ func ParseConfig(configPath string, cwd string) (error, *Config) {
 		return err, nil
 	}
 
+	hydrateSettings(&config, configPath, cwd)
 	hydrateReports(&config, configPath, cwd)
 	hydrateDirectories(&config, configPath, cwd)
 
@@ -62,7 +65,7 @@ func hydrateReports(config *Config, configPath string, cwd string) {
 			hydratedReports,
 			Report{
 				Type: report.Type,
-				Path: convertDirectoryToAbsolutePath(report.Path, configDir, cwd),
+				Path: toAbsolutePath(report.Path, configDir, cwd),
 			},
 		)
 	}
@@ -72,17 +75,28 @@ func hydrateReports(config *Config, configPath string, cwd string) {
 func hydrateDirectories(config *Config, configPath string, cwd string) {
 	configDir := path.Dir(configPath)
 
+	fmt.Printf("ConfigDir: %s\n", configDir)
+
 	var hydratedDirectories []string
 	for _, directory := range config.Directories {
 		hydratedDirectories = append(
 			hydratedDirectories,
-			convertDirectoryToAbsolutePath(directory, configDir, cwd),
+			toAbsolutePath(directory, configDir, cwd),
 		)
 	}
 	config.Directories = hydratedDirectories
 }
 
-func convertDirectoryToAbsolutePath(directory string, configDir string, cwd string) string {
+func hydrateSettings(config *Config, configPath string, cwd string) {
+	if config.Settings.LogPath == "" {
+		config.Settings.LogPath = "xdry.log"
+	}
+
+	configDir := path.Dir(configPath)
+	config.Settings.LogPath = toAbsolutePath(config.Settings.LogPath, configDir, cwd)
+}
+
+func toAbsolutePath(directory string, configDir string, cwd string) string {
 	if strings.HasPrefix(directory, "/") {
 		return directory
 	}

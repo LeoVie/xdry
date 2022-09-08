@@ -3,7 +3,8 @@
     "minCloneLengths": {
       "level-1": 10,
       "level-2": 20
-    }
+    },
+    "logPath": "%pwd%/test/_testdata/xdry.log"
   },
   "directories": [
     "%pwd%/test/_testdata/php",
