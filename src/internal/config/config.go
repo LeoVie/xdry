@@ -14,11 +14,11 @@ type Config struct {
 	Reports     []Report     `json:"reports"`
 	Directories []string     `json:"directories"`
 	Normalizers []Normalizer `json:"normalizers"`
-	LogPath     string       `json:"logPath"`
 }
 
 type Settings struct {
 	MinCloneLengths map[string]int `json:"minCloneLengths"`
+	LogPath         string         `json:"logPath"`
 }
 
 type Report struct {
@@ -49,9 +49,9 @@ func ParseConfig(configPath string, cwd string) (error, *Config) {
 		return err, nil
 	}
 
+	hydrateSettings(&config, configPath, cwd)
 	hydrateReports(&config, configPath, cwd)
 	hydrateDirectories(&config, configPath, cwd)
-	hydrateLogPath(&config, configPath, cwd)
 
 	return nil, &config
 }
@@ -87,13 +87,13 @@ func hydrateDirectories(config *Config, configPath string, cwd string) {
 	config.Directories = hydratedDirectories
 }
 
-func hydrateLogPath(config *Config, configPath string, cwd string) {
-	if config.LogPath == "" {
-		config.LogPath = "xdry.log"
+func hydrateSettings(config *Config, configPath string, cwd string) {
+	if config.Settings.LogPath == "" {
+		config.Settings.LogPath = "xdry.log"
 	}
 
 	configDir := path.Dir(configPath)
-	config.LogPath = toAbsolutePath(config.LogPath, configDir, cwd)
+	config.Settings.LogPath = toAbsolutePath(config.Settings.LogPath, configDir, cwd)
 }
 
 func toAbsolutePath(directory string, configDir string, cwd string) string {

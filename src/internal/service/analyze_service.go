@@ -43,7 +43,7 @@ func Analyze(out io.Writer, configPath string) int {
 		return CommandFailure
 	}
 
-	f, err := os.OpenFile(configuration.LogPath, os.O_RDWR|os.O_CREATE, 0666)
+	f, err := os.OpenFile(configuration.Settings.LogPath, os.O_RDWR|os.O_CREATE, 0666)
 	if err != nil {
 		log.Fatalf("error opening file: %v", err)
 	}
