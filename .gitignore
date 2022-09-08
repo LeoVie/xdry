@@ -5,3 +5,4 @@ build/*
 !build/.gitkeep
 _testdata/generated/reports/*
 !_testdata/generated/reports/.gitkeep
+_testdata/xdry.log

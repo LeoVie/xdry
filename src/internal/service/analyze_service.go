@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"log"
 	"os"
 	"path"
 	"strings"
@@ -41,6 +42,15 @@ func Analyze(out io.Writer, configPath string) int {
 
 		return CommandFailure
 	}
+
+	f, err := os.OpenFile(configuration.LogPath, os.O_RDWR|os.O_CREATE, 0666)
+	if err != nil {
+		log.Fatalf("error opening file: %v", err)
+	}
+	defer f.Close()
+
+	log.SetOutput(f)
+	log.SetFlags(log.Lshortfile)
 
 	var levelNormalizers = make(map[int][]config.Normalizer)
 

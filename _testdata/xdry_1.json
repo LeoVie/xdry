@@ -19,5 +19,6 @@
         "%FILEPATH%"
       ]
     }
-  ]
+  ],
+  "logPath": "%pwd%/test/_testdata/xdry.log"
 }

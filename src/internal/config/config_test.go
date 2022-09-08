@@ -40,6 +40,7 @@ func TestParseConfig(t *testing.T) {
 				},
 			},
 		},
+		LogPath: path.Join(cwd, "test", "_testdata", "xdry.log"),
 	}
 
 	_, actual := ParseConfig(configPath, cwd)

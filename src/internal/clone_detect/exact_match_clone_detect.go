@@ -2,6 +2,7 @@ package clone_detect
 
 import (
 	"fmt"
+	"github.com/schollz/progressbar/v3"
 	"log"
 	"os"
 	"path/filepath"
@@ -65,16 +66,29 @@ func DetectInDirectory(directory string, level int, levelNormalizers map[int][]c
 		return fmt.Errorf("no compare function found for level %d", level), []Clone{}
 	}
 
-	clones := detectClones(normalizedFiles, compareFunc)
+	clones := detectClones(level, normalizedFiles, compareFunc)
 
 	return nil, clones
 }
 
-func detectClones(normalizedFiles map[string]structs.File, compareFunc func(a string, b string) []compare.Match) []Clone {
+func detectClones(level int, normalizedFiles map[string]structs.File, compareFunc func(a string, b string) []compare.Match) []Clone {
 	pairs := make(map[string]Pair)
+
+	bar := progressbar.NewOptions(len(normalizedFiles)*len(normalizedFiles),
+		progressbar.OptionSetWidth(30),
+		progressbar.OptionSetDescription(fmt.Sprintf("Detecting clones (level %d)", level)),
+		progressbar.OptionShowCount(),
+		progressbar.OptionSetWriter(os.Stderr),
+		progressbar.OptionOnCompletion(func() {
+			fmt.Fprint(os.Stderr, "\n")
+		}),
+		progressbar.OptionShowElapsedTimeOnFinish(),
+	)
 
 	for aPath, aFile := range normalizedFiles {
 		for bPath, bFile := range normalizedFiles {
+			bar.Add(1)
+
 			if aPath == bPath {
 				continue
 			}
@@ -155,6 +169,17 @@ func normalizeFiles(
 		mappedNormalizers[normalizer.Extension] = normalizer
 	}
 
+	bar := progressbar.NewOptions(len(filepaths),
+		progressbar.OptionSetWidth(30),
+		progressbar.OptionSetDescription(fmt.Sprintf("Normalizing files (level %d)", level)),
+		progressbar.OptionShowCount(),
+		progressbar.OptionSetWriter(os.Stderr),
+		progressbar.OptionOnCompletion(func() {
+			fmt.Fprint(os.Stderr, "\n")
+		}),
+		progressbar.OptionShowElapsedTimeOnFinish(),
+	)
+
 	const max = 12
 	semaphore := make(chan struct{}, max)
 	wg := &sync.WaitGroup{}
@@ -169,12 +194,14 @@ func normalizeFiles(
 			err, normalizedFile := normalize.Normalize(path, mappedNormalizers, cli.NewCommandExecutor())
 
 			if err != nil {
-				fmt.Println(err)
+				log.Println(err)
 			}
 
 			normalizedFilesMutex.Lock()
 			normalizedFiles[path] = normalizedFile
 			normalizedFilesMutex.Unlock()
+
+			bar.Add(1)
 
 			<-semaphore
 		}(path, mappedNormalizers)
