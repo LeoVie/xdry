@@ -5,8 +5,9 @@ go 1.18
 require (
 	github.com/benjamintf1/unmarshalledmatchers v1.0.0
 	github.com/golang/mock v1.6.0
-	github.com/onsi/gomega v1.20.1
+	github.com/onsi/gomega v1.20.2
 	github.com/sergi/go-diff v1.2.0
+	github.com/valyala/quicktemplate v1.7.0
 	github.com/yosssi/gohtml v0.0.0-20201013000340-ee4748c638f4
 )
 
@@ -16,7 +17,6 @@ require (
 	github.com/onsi/ginkgo v1.16.5 // indirect
 	github.com/stretchr/testify v1.8.0 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
-	github.com/valyala/quicktemplate v1.7.0 // indirect
 	golang.org/x/net v0.0.0-20220826154423-83b083e8dc8b // indirect
 	golang.org/x/text v0.3.7 // indirect
 	gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f // indirect
