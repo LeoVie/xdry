@@ -4,7 +4,8 @@
       "level-1": 10,
       "level-2": 20
     },
-    "logPath": "%pwd%/test/_testdata/xdry.log"
+    "logPath": "%pwd%/test/_testdata/xdry.log",
+    "cacheDirectory": "%pwd%/test/_testdata/cache"
   },
   "directories": [
     "%pwd%/test/_testdata/php",

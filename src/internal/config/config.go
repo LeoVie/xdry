@@ -19,6 +19,7 @@ type Config struct {
 type Settings struct {
 	MinCloneLengths map[string]int `json:"minCloneLengths"`
 	LogPath         string         `json:"logPath"`
+	CacheDirectory  string         `json:"cacheDirectory"`
 }
 
 type Report struct {
@@ -91,9 +92,13 @@ func hydrateSettings(config *Config, configPath string, cwd string) {
 	if config.Settings.LogPath == "" {
 		config.Settings.LogPath = "xdry.log"
 	}
+	if config.Settings.CacheDirectory == "" {
+		config.Settings.CacheDirectory = "."
+	}
 
 	configDir := path.Dir(configPath)
 	config.Settings.LogPath = toAbsolutePath(config.Settings.LogPath, configDir, cwd)
+	config.Settings.CacheDirectory = toAbsolutePath(config.Settings.CacheDirectory, configDir, cwd)
 }
 
 func toAbsolutePath(directory string, configDir string, cwd string) string {
