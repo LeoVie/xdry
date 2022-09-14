@@ -6,7 +6,7 @@ require (
 	github.com/benjamintf1/unmarshalledmatchers v1.0.0
 	github.com/golang/mock v1.6.0
 	github.com/onsi/gomega v1.20.2
-	github.com/schollz/progressbar/v3 v3.10.1
+	github.com/schollz/progressbar/v3 v3.11.0
 	github.com/sergi/go-diff v1.2.0
 	github.com/valyala/quicktemplate v1.7.0
 	github.com/yosssi/gohtml v0.0.0-20201013000340-ee4748c638f4
