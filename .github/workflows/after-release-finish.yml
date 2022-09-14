@@ -7,6 +7,9 @@ jobs:
   Update_VERSION_file:
     runs-on: ubuntu-latest
     steps:
+      - name: "Check out repository code"
+        uses: actions/checkout@v3
+
       - name: Get version
         id: get_version
         run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/v}
