@@ -74,16 +74,7 @@ func DetectInDirectory(directory string, level int, levelNormalizers map[int][]c
 func detectClones(level int, normalizedFiles map[string]structs.File, compareFunc func(a string, b string) []compare.Match) []Clone {
 	pairs := make(map[string]Pair)
 
-	bar := progressbar.NewOptions(len(normalizedFiles)*len(normalizedFiles),
-		progressbar.OptionSetWidth(30),
-		progressbar.OptionSetDescription(fmt.Sprintf("Detecting clones (level %d)", level)),
-		progressbar.OptionShowCount(),
-		progressbar.OptionSetWriter(os.Stderr),
-		progressbar.OptionOnCompletion(func() {
-			fmt.Fprint(os.Stderr, "\n")
-		}),
-		progressbar.OptionShowElapsedTimeOnFinish(),
-	)
+	bar := createProgressbar(fmt.Sprintf("Detecting clones (level %d)", level), len(normalizedFiles)*len(normalizedFiles))
 
 	for aPath, aFile := range normalizedFiles {
 		for bPath, bFile := range normalizedFiles {
@@ -140,6 +131,20 @@ func detectClones(level int, normalizedFiles map[string]structs.File, compareFun
 	return clones
 }
 
+func createProgressbar(description string, length int) *progressbar.ProgressBar {
+	return progressbar.NewOptions(length,
+		progressbar.OptionSetWidth(30),
+		progressbar.OptionSetDescription(description),
+		progressbar.OptionShowCount(),
+		progressbar.OptionSetWriter(os.Stderr),
+		progressbar.OptionOnCompletion(func() {
+			fmt.Fprint(os.Stderr, "\n")
+		}),
+		progressbar.OptionShowElapsedTimeOnFinish(),
+		progressbar.OptionShowDescriptionAtLineEnd(),
+	)
+}
+
 func orderFiles(aFile structs.File, bFile structs.File) (structs.File, structs.File) {
 	if aFile.Path < bFile.Path {
 		return aFile, bFile
@@ -169,16 +174,7 @@ func normalizeFiles(
 		mappedNormalizers[normalizer.Extension] = normalizer
 	}
 
-	bar := progressbar.NewOptions(len(filepaths),
-		progressbar.OptionSetWidth(30),
-		progressbar.OptionSetDescription(fmt.Sprintf("Normalizing files (level %d)", level)),
-		progressbar.OptionShowCount(),
-		progressbar.OptionSetWriter(os.Stderr),
-		progressbar.OptionOnCompletion(func() {
-			fmt.Fprint(os.Stderr, "\n")
-		}),
-		progressbar.OptionShowElapsedTimeOnFinish(),
-	)
+	bar := createProgressbar(fmt.Sprintf("Normalizing files (level %d)", level), len(filepaths))
 
 	const max = 12
 	semaphore := make(chan struct{}, max)
