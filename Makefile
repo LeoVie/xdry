@@ -13,5 +13,9 @@ endif
 
 .PHONY: build_for_all_platforms
 build_for_all_platforms:
+ifndef version
+	$(error version is not set)
+endif
+	@echo "Building for all platforms (version ${version})"
 	chmod +x ./multiplatform_build.sh
 	./multiplatform_build.sh
