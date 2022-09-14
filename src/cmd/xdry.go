@@ -2,13 +2,18 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
 	"os"
 	"path"
 	"x-dry-go/src/internal/service"
 )
 
+var version string
+
 func main() {
+	fmt.Printf("xdry %s\n", version)
+
 	var configPath string
 
 	commandLine := flag.NewFlagSet(os.Args[0], flag.ExitOnError)
