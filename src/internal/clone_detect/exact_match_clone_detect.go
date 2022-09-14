@@ -6,7 +6,9 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strconv"
 	"sync"
+	"x-dry-go/src/internal/cache"
 	"x-dry-go/src/internal/cli"
 	"x-dry-go/src/internal/compare"
 	"x-dry-go/src/internal/config"
@@ -158,9 +160,19 @@ func normalizeFiles(
 	levelNormalizers map[int][]config.Normalizer,
 	filepaths []string,
 ) map[string]structs.File {
+	fileCache, err := cache.InitOrReadCache("xdry-cache_level_" + strconv.Itoa(level) + ".json")
+
+	if err != nil {
+		fmt.Println("Error reading cache")
+	}
+
 	var (
 		normalizedFilesMutex sync.Mutex
 		normalizedFiles      = make(map[string]structs.File)
+	)
+	var (
+		cacheMutex       sync.Mutex
+		mutexedFileCache = fileCache
 	)
 
 	normalizers, ok := levelNormalizers[level]
@@ -181,6 +193,15 @@ func normalizeFiles(
 	wg := &sync.WaitGroup{}
 
 	for _, path := range filepaths {
+		normalizedFile, err := cache.Get(*fileCache, path)
+		if err == nil {
+			normalizedFilesMutex.Lock()
+			normalizedFiles[path] = *normalizedFile
+			normalizedFilesMutex.Unlock()
+			bar.Add(1)
+			continue
+		}
+
 		semaphore <- struct{}{}
 		wg.Add(1)
 
@@ -196,6 +217,9 @@ func normalizeFiles(
 			normalizedFilesMutex.Lock()
 			normalizedFiles[path] = normalizedFile
 			normalizedFilesMutex.Unlock()
+			cacheMutex.Lock()
+			cache.Store(*mutexedFileCache, normalizedFile)
+			cacheMutex.Unlock()
 
 			bar.Add(1)
 

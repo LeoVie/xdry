@@ -6,3 +6,6 @@ build/*
 _testdata/generated/reports/*
 !_testdata/generated/reports/.gitkeep
 _testdata/xdry.log
+xdry-cache_*.json
+/xdry.json
+/xdry.log
