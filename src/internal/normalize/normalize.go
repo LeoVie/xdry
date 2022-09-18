@@ -11,13 +11,11 @@ import (
 
 func Normalize(path string, normalizers map[string]config.Normalizer, commandExecutor cli.CommandExecutor) (error, structs.File) {
 	err, normalizer := findNormalizeImplementation(path, normalizers)
-
 	if err != nil {
 		return err, structs.File{}
 	}
 
 	commandOutput, err := commandExecutor.Execute(normalizer.Command, hydrateArgs(path, normalizer))
-
 	if err != nil {
 		return err, structs.File{}
 	}
