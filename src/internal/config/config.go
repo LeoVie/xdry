@@ -35,29 +35,7 @@ type Normalizer struct {
 	Args      []string `json:"args"`
 }
 
-func ParseConfig(configPath string, cwd string) (error, *Config) {
-	jsonFile, err := os.Open(configPath)
-	if err != nil {
-		return err, nil
-	}
-	defer jsonFile.Close()
-
-	byteValue, _ := ioutil.ReadAll(jsonFile)
-
-	var config Config
-	err = json.Unmarshal(byteValue, &config)
-	if err != nil {
-		return err, nil
-	}
-
-	hydrateSettings(&config, configPath, cwd)
-	hydrateReports(&config, configPath, cwd)
-	hydrateDirectories(&config, configPath, cwd)
-
-	return nil, &config
-}
-
-func hydrateReports(config *Config, configPath string, cwd string) {
+func (config *Config) hydrateReports(configPath string, cwd string) {
 	configDir := path.Dir(configPath)
 
 	var hydratedReports []Report
@@ -73,7 +51,7 @@ func hydrateReports(config *Config, configPath string, cwd string) {
 	config.Reports = hydratedReports
 }
 
-func hydrateDirectories(config *Config, configPath string, cwd string) {
+func (config *Config) hydrateDirectories(configPath string, cwd string) {
 	configDir := path.Dir(configPath)
 
 	fmt.Printf("ConfigDir: %s\n", configDir)
@@ -88,7 +66,7 @@ func hydrateDirectories(config *Config, configPath string, cwd string) {
 	config.Directories = hydratedDirectories
 }
 
-func hydrateSettings(config *Config, configPath string, cwd string) {
+func (config *Config) hydrateSettings(configPath string, cwd string) {
 	if config.Settings.LogPath == "" {
 		config.Settings.LogPath = "xdry.log"
 	}
@@ -99,6 +77,28 @@ func hydrateSettings(config *Config, configPath string, cwd string) {
 	configDir := path.Dir(configPath)
 	config.Settings.LogPath = toAbsolutePath(config.Settings.LogPath, configDir, cwd)
 	config.Settings.CacheDirectory = toAbsolutePath(config.Settings.CacheDirectory, configDir, cwd)
+}
+
+func ParseConfig(configPath string, cwd string) (error, *Config) {
+	jsonFile, err := os.Open(configPath)
+	if err != nil {
+		return err, nil
+	}
+	defer jsonFile.Close()
+
+	byteValue, _ := ioutil.ReadAll(jsonFile)
+
+	var config Config
+	err = json.Unmarshal(byteValue, &config)
+	if err != nil {
+		return err, nil
+	}
+
+	config.hydrateSettings(configPath, cwd)
+	config.hydrateReports(configPath, cwd)
+	config.hydrateDirectories(configPath, cwd)
+
+	return nil, &config
 }
 
 func toAbsolutePath(directory string, configDir string, cwd string) string {

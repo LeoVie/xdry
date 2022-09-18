@@ -8,14 +8,14 @@ type CommandExecutor interface {
 
 type CLICommandExecutor struct{}
 
+func NewCommandExecutor() CommandExecutor {
+	return CLICommandExecutor{}
+}
+
 func (CLICommandExecutor) Execute(command string, args []string) (string, error) {
 	cmd := exec.Command(command, args...)
 
 	stdout, err := cmd.Output()
 
 	return string(stdout), err
-}
-
-func NewCommandExecutor() CommandExecutor {
-	return CLICommandExecutor{}
 }

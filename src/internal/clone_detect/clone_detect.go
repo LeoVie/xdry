@@ -16,19 +16,56 @@ import (
 	"x-dry-go/src/internal/structs"
 )
 
-type Clone = struct {
+type Clone struct {
 	A        string
 	B        string
 	Language string
 	Matches  []compare.Match
 }
 
-type Pair = struct {
+type filePair struct {
 	AFile structs.File
 	BFile structs.File
 }
 
-func DetectInDirectory(directory string, level int, levelNormalizers map[int][]config.Normalizer) (error, []Clone) {
+func (pair filePair) sort() filePair {
+	if pair.AFile.Path < pair.BFile.Path {
+		return pair
+	}
+
+	return filePair{
+		AFile: pair.BFile,
+		BFile: pair.AFile,
+	}
+}
+
+func (pair filePair) hash() string {
+	return pair.AFile.Path + "_" + pair.BFile.Path
+}
+
+func DetectInDirectory(directory string, cloneType int, levelNormalizers map[int][]config.Normalizer) (error, []Clone) {
+	filepaths, err := findFilesInDir(directory)
+	if err != nil {
+		return err, []Clone{}
+	}
+
+	normalizedFiles := normalizeFiles(
+		cloneTypeToNormalizeLevel(cloneType),
+		levelNormalizers,
+		filepaths,
+	)
+
+	err, compareFunc := getCompareFuncForLevel(cloneType)
+	if err != nil {
+		return err, []Clone{}
+	}
+
+	clones := detectClones(cloneType, normalizedFiles, compareFunc)
+
+	return nil, clones
+}
+
+func findFilesInDir(directory string) ([]string, error) {
 	var filepaths []string
 	err := filepath.Walk(directory,
 		func(path string, info os.FileInfo, err error) error {
@@ -40,65 +77,36 @@ func DetectInDirectory(directory string, level int, levelNormalizers map[int][]c
 			}
 			return nil
 		})
-	if err != nil {
-		return err, []Clone{}
+
+	return filepaths, err
+}
+
+func cloneTypeToNormalizeLevel(cloneType int) int {
+	if cloneType > 2 {
+		return 2
 	}
 
-	normalizeLevel := level
-	if level > 2 {
-		normalizeLevel = 2
-	}
+	return cloneType
+}
 
-	normalizedFiles := normalizeFiles(
-		normalizeLevel,
-		levelNormalizers,
-		filepaths,
-	)
-
-	var compareFunc func(string, string) []compare.Match
+func getCompareFuncForLevel(level int) (error, func(a string, b string) []compare.Match) {
 	if level == 1 || level == 2 {
-		compareFunc = func(a string, b string) []compare.Match {
+		return nil, func(a string, b string) []compare.Match {
 			return compare.FindExactMatches(a, b)
 		}
-	} else if level == 3 {
-		compareFunc = func(a string, b string) []compare.Match {
-			return compare.FindLongestCommonSubsequence(a, b)
-		}
-	} else {
-		return fmt.Errorf("no compare function found for level %d", level), []Clone{}
 	}
 
-	clones := detectClones(level, normalizedFiles, compareFunc)
+	if level == 3 {
+		return nil, func(a string, b string) []compare.Match {
+			return compare.FindLongestCommonSubsequence(a, b)
+		}
+	}
 
-	return nil, clones
+	return fmt.Errorf("no compare function found for level %d", level), nil
 }
 
 func detectClones(level int, normalizedFiles map[string]structs.File, compareFunc func(a string, b string) []compare.Match) []Clone {
-	pairs := make(map[string]Pair)
-
 	bar := createProgressbar(fmt.Sprintf("Detecting clones (level %d)", level), len(normalizedFiles)*len(normalizedFiles))
-
-	for aPath, aFile := range normalizedFiles {
-		for bPath, bFile := range normalizedFiles {
-			bar.Add(1)
-
-			if aPath == bPath {
-				continue
-			}
-
-			firstFile, secondFile := orderFiles(aFile, bFile)
-
-			hash := buildCloneHash(firstFile.Path, secondFile.Path)
-			if _, ok := pairs[hash]; ok {
-				continue
-			}
-
-			pairs[hash] = Pair{
-				AFile: firstFile,
-				BFile: secondFile,
-			}
-		}
-	}
 
 	var (
 		clonesMutex sync.Mutex
@@ -106,10 +114,11 @@ func detectClones(level int, normalizedFiles map[string]structs.File, compareFun
 	)
 	var clonesWg sync.WaitGroup
 
+	pairs := buildFilePairs(normalizedFiles, bar)
 	for _, pair := range pairs {
 		clonesWg.Add(1)
 
-		go func(pair Pair) {
+		go func(pair filePair) {
 			defer clonesWg.Done()
 
 			matches := compareFunc(pair.AFile.Content, pair.BFile.Content)
@@ -130,7 +139,36 @@ func detectClones(level int, normalizedFiles map[string]structs.File, compareFun
 	}
 
 	clonesWg.Wait()
+
 	return clones
+}
+
+func buildFilePairs(files map[string]structs.File, bar *progressbar.ProgressBar) map[string]filePair {
+	pairs := make(map[string]filePair)
+
+	for aPath, aFile := range files {
+		for bPath, bFile := range files {
+			bar.Add(1)
+
+			if aPath == bPath {
+				continue
+			}
+
+			pair := filePair{
+				AFile: aFile,
+				BFile: bFile,
+			}.sort()
+
+			hash := pair.hash()
+			if _, ok := pairs[hash]; ok {
+				continue
+			}
+
+			pairs[hash] = pair
+		}
+	}
+
+	return pairs
 }
 
 func createProgressbar(description string, length int) *progressbar.ProgressBar {
@@ -147,21 +185,12 @@ func createProgressbar(description string, length int) *progressbar.ProgressBar 
 	)
 }
 
-func orderFiles(aFile structs.File, bFile structs.File) (structs.File, structs.File) {
-	if aFile.Path < bFile.Path {
-		return aFile, bFile
-	}
-
-	return bFile, aFile
-}
-
 func normalizeFiles(
 	level int,
 	levelNormalizers map[int][]config.Normalizer,
 	filepaths []string,
 ) map[string]structs.File {
 	fileCache, err := cache.InitOrReadCache("xdry-cache_level_" + strconv.Itoa(level) + ".json")
-
 	if err != nil {
 		fmt.Println("Error reading cache")
 	}
@@ -229,8 +258,4 @@ func normalizeFiles(
 	wg.Wait()
 
 	return normalizedFiles
-}
-
-func buildCloneHash(aPath string, bPath string) string {
-	return aPath + "_" + bPath
 }

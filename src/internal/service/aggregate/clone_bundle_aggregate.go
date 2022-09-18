@@ -2,93 +2,93 @@ package aggregate
 
 import "x-dry-go/src/internal/clone_detect"
 
-type CloneInstance struct {
+type cloneInstance struct {
 	Path     string
 	Language string
 	Index    int
 }
 
-type AggregatedClone struct {
+type aggregatedClone struct {
 	Content   string
 	Language  string
-	Instances []CloneInstance
+	Instances []cloneInstance
+}
+
+func (aggrClone *aggregatedClone) hasInstance(instance cloneInstance) bool {
+	for _, x := range aggrClone.Instances {
+		if x == instance {
+			return true
+		}
+	}
+	return false
+}
+
+func (aggrClone *aggregatedClone) addInstanceIfNotAlreadyHaving(instance cloneInstance) {
+	if !aggrClone.hasInstance(instance) {
+		aggrClone.Instances = append(aggrClone.Instances, instance)
+	}
 }
 
 type CloneBundle struct {
 	CloneType        int
-	AggregatedClones []AggregatedClone
+	AggregatedClones []aggregatedClone
+}
+
+func newCloneBundle(cloneType int, aggregatedClones []aggregatedClone) *CloneBundle {
+	if aggregatedClones == nil {
+		aggregatedClones = []aggregatedClone{}
+	}
+	return &CloneBundle{
+		CloneType:        cloneType,
+		AggregatedClones: aggregatedClones,
+	}
 }
 
 func AggregateCloneBundles(clones map[int][]clone_detect.Clone) []CloneBundle {
-	cloneBundles := []CloneBundle{}
+	var cloneBundles []CloneBundle
 
 	for cloneType, clones := range clones {
-		aggregatedClones := []AggregatedClone{}
+		var aggregatedClones []aggregatedClone
 
 		for _, clone := range clones {
 			for _, match := range clone.Matches {
+				instanceA := cloneInstance{
+					Path:     clone.A,
+					Language: clone.Language,
+					Index:    match.IndexA,
+				}
+				instanceB := cloneInstance{
+					Path:     clone.B,
+					Language: clone.Language,
+					Index:    match.IndexB,
+				}
 
 				addedToExistingAggregatedClone := false
 
-				for aggregatedCloneKey, aggregatedClone := range aggregatedClones {
-					if aggregatedClone.Content == match.Content {
+				for aggregatedCloneKey, aggrClone := range aggregatedClones {
+					if aggrClone.Content == match.Content {
 						addedToExistingAggregatedClone = true
-
-						cloneInstance := CloneInstance{
-							Path:     clone.A,
-							Language: clone.Language,
-							Index:    match.IndexA,
-						}
-						if !containsCloneInstance(cloneInstance, aggregatedClones[aggregatedCloneKey].Instances) {
-							aggregatedClones[aggregatedCloneKey].Instances = append(aggregatedClones[aggregatedCloneKey].Instances, cloneInstance)
-						}
-
-						cloneInstance = CloneInstance{
-							Path:     clone.B,
-							Language: clone.Language,
-							Index:    match.IndexB,
-						}
-						if !containsCloneInstance(cloneInstance, aggregatedClones[aggregatedCloneKey].Instances) {
-							aggregatedClones[aggregatedCloneKey].Instances = append(aggregatedClones[aggregatedCloneKey].Instances, cloneInstance)
-						}
+						aggregatedClones[aggregatedCloneKey].addInstanceIfNotAlreadyHaving(instanceA)
+						aggregatedClones[aggregatedCloneKey].addInstanceIfNotAlreadyHaving(instanceB)
+						continue
 					}
 				}
 
 				if !addedToExistingAggregatedClone {
-					aggregatedClones = append(aggregatedClones, AggregatedClone{
+					aggregatedClones = append(aggregatedClones, aggregatedClone{
 						Content:  match.Content,
 						Language: clone.Language,
-						Instances: []CloneInstance{
-							{
-								Path:     clone.A,
-								Language: clone.Language,
-								Index:    match.IndexA,
-							},
-							{
-								Path:     clone.B,
-								Language: clone.Language,
-								Index:    match.IndexB,
-							},
+						Instances: []cloneInstance{
+							instanceA,
+							instanceB,
 						},
 					})
 				}
 			}
 		}
 
-		cloneBundles = append(cloneBundles, CloneBundle{
-			CloneType:        cloneType,
-			AggregatedClones: aggregatedClones,
-		})
+		cloneBundles = append(cloneBundles, *newCloneBundle(cloneType, aggregatedClones))
 	}
 
 	return cloneBundles
-}
-
-func containsCloneInstance(cloneInstance CloneInstance, list []CloneInstance) bool {
-	for _, x := range list {
-		if x == cloneInstance {
-			return true
-		}
-	}
-	return false
 }

@@ -7,6 +7,8 @@ import (
 	"log"
 	"os"
 	"path"
+	"sort"
+	"strconv"
 	"strings"
 	"x-dry-go/src/internal/clone_detect"
 	"x-dry-go/src/internal/compare"
@@ -21,35 +23,22 @@ const (
 )
 
 func Analyze(out io.Writer, configPath string) int {
-	if _, err := os.Stat(configPath); errors.Is(err, os.ErrNotExist) {
-		fmt.Fprintf(out, "could not find config file '%s'\n", configPath)
+	configuration, err := readConfig(configPath)
+	if err != nil {
+		fmt.Println(out, err)
 
 		return CommandFailure
 	}
 
-	cwd, err := os.Getwd()
+	logFile, err := os.OpenFile(configuration.Settings.LogPath, os.O_RDWR|os.O_CREATE, 0666)
 	if err != nil {
-		fmt.Fprintln(out, err)
+		fmt.Fprintf(out, "error opening log file: %v", err)
 
 		return CommandFailure
 	}
+	defer logFile.Close()
 
-	absoluteConfigPath := convertConfigPathToAbsolutePath(configPath, cwd)
-	err, configuration := config.ParseConfig(absoluteConfigPath, cwd)
-
-	if err != nil {
-		fmt.Fprintf(out, "error while parsing config under '%s'", absoluteConfigPath)
-
-		return CommandFailure
-	}
-
-	f, err := os.OpenFile(configuration.Settings.LogPath, os.O_RDWR|os.O_CREATE, 0666)
-	if err != nil {
-		log.Fatalf("error opening file: %v", err)
-	}
-	defer f.Close()
-
-	log.SetOutput(f)
+	log.SetOutput(logFile)
 	log.SetFlags(log.Lshortfile)
 
 	var levelNormalizers = make(map[int][]config.Normalizer)
@@ -58,81 +47,97 @@ func Analyze(out io.Writer, configPath string) int {
 		levelNormalizers[normalizer.Level] = append(levelNormalizers[normalizer.Level], normalizer)
 	}
 
-	var type1Clones []clone_detect.Clone
-	var type2Clones []clone_detect.Clone
-	var type3Clones []clone_detect.Clone
+	typedClones := map[int][]clone_detect.Clone{}
 	for _, directory := range configuration.Directories {
-		err, type1ClonesInDir := clone_detect.DetectInDirectory(directory, 1, levelNormalizers)
-		if err != nil {
-			fmt.Fprintln(out, err)
+		for cloneType := 1; cloneType <= 3; cloneType++ {
+			err, clonesInDir := clone_detect.DetectInDirectory(directory, cloneType, levelNormalizers)
+			if err != nil {
+				fmt.Fprintln(out, err)
 
-			return CommandFailure
-		}
-		err, type2ClonesInDir := clone_detect.DetectInDirectory(directory, 2, levelNormalizers)
-		if err != nil {
-			fmt.Fprintln(out, err)
+				return CommandFailure
+			}
 
-			return CommandFailure
-		}
-		err, type3ClonesInDir := clone_detect.DetectInDirectory(directory, 3, levelNormalizers)
-		if err != nil {
-			fmt.Fprintln(out, err)
+			clonesInDir = filterClonesByLength(
+				clonesInDir,
+				configuration.Settings.MinCloneLengths["level-"+strconv.Itoa(cloneType)],
+			)
 
-			return CommandFailure
-		}
-
-		for _, clone := range type1ClonesInDir {
-			type1Clones = append(type1Clones, clone)
-		}
-		for _, clone := range type2ClonesInDir {
-			type2Clones = append(type2Clones, clone)
-		}
-		for _, clone := range type3ClonesInDir {
-			type2Clones = append(type2Clones, clone)
+			typedClones[cloneType] = append(typedClones[cloneType], clonesInDir...)
 		}
 	}
 
-	relevantType1Clones := filterClonesByLength(type1Clones, configuration.Settings.MinCloneLengths["level-1"])
-	relevantType2Clones := filterClonesByLength(type2Clones, configuration.Settings.MinCloneLengths["level-2"])
-	relevantType3Clones := filterClonesByLength(type3Clones, configuration.Settings.MinCloneLengths["level-3"])
-
-	clones := map[int][]clone_detect.Clone{
-		1: relevantType1Clones,
-		2: relevantType2Clones,
-		3: relevantType3Clones,
-	}
-
-	cloneBundles := aggregate.AggregateCloneBundles(clones)
+	cloneBundles := aggregate.AggregateCloneBundles(typedClones)
+	cloneBundles = normalizeCloneBundles(cloneBundles)
 
 	for _, report := range configuration.Reports {
+		var err error
+
 		if report.Type == "json" {
-			err := reporter.WriteJsonReport(cloneBundles, report)
-
-			if err != nil {
-				fmt.Fprintln(out, err)
-
-				return CommandFailure
-			}
+			err = reporter.WriteJsonReport(cloneBundles, report)
 		} else if report.Type == "html" {
-			err := reporter.WriteHtmlReport(cloneBundles, report)
+			err = reporter.WriteHtmlReport(cloneBundles, report)
+		}
+		if err != nil {
+			fmt.Fprintln(out, err)
 
-			if err != nil {
-				fmt.Fprintln(out, err)
-
-				return CommandFailure
-			}
+			return CommandFailure
 		}
 	}
 
 	return CommandSuccess
 }
 
-func convertConfigPathToAbsolutePath(configPath string, cwd string) string {
-	if strings.HasPrefix(configPath, "/") {
-		return configPath
+func normalizeCloneBundles(cloneBundles []aggregate.CloneBundle) []aggregate.CloneBundle {
+	for _, bundle := range cloneBundles {
+		sort.Slice(bundle.AggregatedClones, func(i, j int) bool {
+			a := bundle.AggregatedClones[i].Content
+			b := bundle.AggregatedClones[j].Content
+
+			if len(a) == len(b) {
+				return a < b
+			}
+
+			return len(a) < len(b)
+		})
+		for _, aggrClone := range bundle.AggregatedClones {
+			sort.Slice(aggrClone.Instances, func(i, j int) bool {
+				return aggrClone.Instances[i].Path < aggrClone.Instances[j].Path
+			})
+		}
+	}
+	sort.Slice(cloneBundles, func(i, j int) bool {
+		return cloneBundles[i].CloneType < cloneBundles[j].CloneType
+	})
+
+	return cloneBundles
+}
+
+func readConfig(configPath string) (*config.Config, error) {
+	if _, err := os.Stat(configPath); errors.Is(err, os.ErrNotExist) {
+		return nil, fmt.Errorf("could not find config file '%s'", configPath)
 	}
 
-	return path.Join(cwd, configPath)
+	cwd, err := os.Getwd()
+	if err != nil {
+		return nil, err
+	}
+
+	absoluteConfigPath := toAbsolutePath(configPath, cwd)
+	err, configuration := config.ParseConfig(absoluteConfigPath, cwd)
+
+	if err != nil {
+		return nil, fmt.Errorf("error while parsing config under '%s'", absoluteConfigPath)
+	}
+
+	return configuration, nil
+}
+
+func toAbsolutePath(p string, cwd string) string {
+	if strings.HasPrefix(p, "/") {
+		return p
+	}
+
+	return path.Join(cwd, p)
 }
 
 func filterClonesByLength(clones []clone_detect.Clone, minLength int) []clone_detect.Clone {
