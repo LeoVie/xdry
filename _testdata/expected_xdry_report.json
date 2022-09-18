@@ -23,6 +23,11 @@
         "Language": "php",
         "Instances": [
           {
+            "Path": "%PROJECT_PATH%/_testdata/php/bar.php",
+            "Language": "php",
+            "Index": 30
+          },
+          {
             "Path": "%PROJECT_PATH%/_testdata/php/bla.php",
             "Language": "php",
             "Index": 20
@@ -31,11 +36,6 @@
             "Path": "%PROJECT_PATH%/_testdata/php/bum.php",
             "Language": "php",
             "Index": 31
-          },
-          {
-            "Path": "%PROJECT_PATH%/_testdata/php/bar.php",
-            "Language": "php",
-            "Index": 30
           },
           {
             "Path": "%PROJECT_PATH%/_testdata/php/foo.php",
@@ -91,6 +91,11 @@
         "Language": "php",
         "Instances": [
           {
+            "Path": "%PROJECT_PATH%/_testdata/php/bar.php",
+            "Language": "php",
+            "Index": 12
+          },
+          {
             "Path": "%PROJECT_PATH%/_testdata/php/bla.php",
             "Language": "php",
             "Index": 2
@@ -99,11 +104,6 @@
             "Path": "%PROJECT_PATH%/_testdata/php/bum.php",
             "Language": "php",
             "Index": 13
-          },
-          {
-            "Path": "%PROJECT_PATH%/_testdata/php/bar.php",
-            "Language": "php",
-            "Index": 12
           },
           {
             "Path": "%PROJECT_PATH%/_testdata/php/foo.php",
@@ -154,17 +154,17 @@
         "Language": "javascript",
         "Instances": [
           {
+            "Path": "%PROJECT_PATH%/_testdata/javascript/bar.js",
+            "Language": "javascript",
+            "Index": 17
+          },
+          {
             "Path": "%PROJECT_PATH%/_testdata/javascript/bla.js",
             "Language": "javascript",
             "Index": 0
           },
           {
             "Path": "%PROJECT_PATH%/_testdata/javascript/foo.js",
-            "Language": "javascript",
-            "Index": 17
-          },
-          {
-            "Path": "%PROJECT_PATH%/_testdata/javascript/bar.js",
             "Language": "javascript",
             "Index": 17
           }
@@ -196,17 +196,17 @@
         "Language": "php",
         "Instances": [
           {
+            "Path": "%PROJECT_PATH%/_testdata/php/bar.php",
+            "Language": "php",
+            "Index": 31
+          },
+          {
             "Path": "%PROJECT_PATH%/_testdata/php/bla.php",
             "Language": "php",
             "Index": 21
           },
           {
             "Path": "%PROJECT_PATH%/_testdata/php/bum.php",
-            "Language": "php",
-            "Index": 31
-          },
-          {
-            "Path": "%PROJECT_PATH%/_testdata/php/bar.php",
             "Language": "php",
             "Index": 31
           },
@@ -222,17 +222,17 @@
         "Language": "php",
         "Instances": [
           {
+            "Path": "%PROJECT_PATH%/_testdata/php/bar.php",
+            "Language": "php",
+            "Index": 0
+          },
+          {
             "Path": "%PROJECT_PATH%/_testdata/php/bla.php",
             "Language": "php",
             "Index": 0
           },
           {
             "Path": "%PROJECT_PATH%/_testdata/php/bum.php",
-            "Language": "php",
-            "Index": 0
-          },
-          {
-            "Path": "%PROJECT_PATH%/_testdata/php/bar.php",
             "Language": "php",
             "Index": 0
           },
@@ -248,6 +248,11 @@
         "Language": "php",
         "Instances": [
           {
+            "Path": "%PROJECT_PATH%/_testdata/php/bar.php",
+            "Language": "php",
+            "Index": 20
+          },
+          {
             "Path": "%PROJECT_PATH%/_testdata/php/bla.php",
             "Language": "php",
             "Index": 10
@@ -258,40 +263,9 @@
             "Index": 20
           },
           {
-            "Path": "%PROJECT_PATH%/_testdata/php/bar.php",
-            "Language": "php",
-            "Index": 20
-          },
-          {
             "Path": "%PROJECT_PATH%/_testdata/php/foo.php",
             "Language": "php",
             "Index": 20
-          }
-        ]
-      },
-      {
-        "Content": "$x0 = 1 ; print ( $x ) ;",
-        "Language": "php",
-        "Instances": [
-          {
-            "Path": "%PROJECT_PATH%/_testdata/php/bar.php",
-            "Language": "php",
-            "Index": 0
-          },
-          {
-            "Path": "%PROJECT_PATH%/_testdata/php/bla.php",
-            "Language": "php",
-            "Index": 0
-          },
-          {
-            "Path": "%PROJECT_PATH%/_testdata/php/foo.php",
-            "Language": "php",
-            "Index": 0
-          },
-          {
-            "Path": "%PROJECT_PATH%/_testdata/php/bum.php",
-            "Language": "php",
-            "Index": 0
           }
         ]
       },
@@ -300,17 +274,17 @@
         "Language": "javascript",
         "Instances": [
           {
+            "Path": "%PROJECT_PATH%/_testdata/javascript/bar.js",
+            "Language": "javascript",
+            "Index": 16
+          },
+          {
             "Path": "%PROJECT_PATH%/_testdata/javascript/bla.js",
             "Language": "javascript",
             "Index": 0
           },
           {
             "Path": "%PROJECT_PATH%/_testdata/javascript/foo.js",
-            "Language": "javascript",
-            "Index": 16
-          },
-          {
-            "Path": "%PROJECT_PATH%/_testdata/javascript/bar.js",
             "Language": "javascript",
             "Index": 16
           }
@@ -321,17 +295,17 @@
         "Language": "php",
         "Instances": [
           {
+            "Path": "%PROJECT_PATH%/_testdata/php/bar.php",
+            "Language": "php",
+            "Index": 0
+          },
+          {
             "Path": "%PROJECT_PATH%/_testdata/php/bum.php",
             "Language": "php",
             "Index": 0
           },
           {
             "Path": "%PROJECT_PATH%/_testdata/php/foo.php",
-            "Language": "php",
-            "Index": 0
-          },
-          {
-            "Path": "%PROJECT_PATH%/_testdata/php/bar.php",
             "Language": "php",
             "Index": 0
           }
@@ -357,6 +331,91 @@
   },
   {
     "CloneType": 3,
-    "AggregatedClones": []
+    "AggregatedClones": [
+      {
+        "Content": "$x0 = 1 ; print ( $x ) ;",
+        "Language": "php",
+        "Instances": [
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/bar.php",
+            "Language": "php",
+            "Index": 0
+          },
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/bla.php",
+            "Language": "php",
+            "Index": 0
+          },
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/bum.php",
+            "Language": "php",
+            "Index": 0
+          },
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/foo.php",
+            "Language": "php",
+            "Index": 0
+          }
+        ]
+      },
+      {
+        "Content": "const x = 1 ; \n x . x ( x ) ; \n",
+        "Language": "javascript",
+        "Instances": [
+          {
+            "Path": "%PROJECT_PATH%/_testdata/javascript/bar.js",
+            "Language": "javascript",
+            "Index": 16
+          },
+          {
+            "Path": "%PROJECT_PATH%/_testdata/javascript/bla.js",
+            "Language": "javascript",
+            "Index": 0
+          },
+          {
+            "Path": "%PROJECT_PATH%/_testdata/javascript/foo.js",
+            "Language": "javascript",
+            "Index": 16
+          }
+        ]
+      },
+      {
+        "Content": "$x0 = 1 ; $x1 = 1 ; print ( $x1 ) ;",
+        "Language": "php",
+        "Instances": [
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/bar.php",
+            "Language": "php",
+            "Index": 0
+          },
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/bum.php",
+            "Language": "php",
+            "Index": 0
+          },
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/foo.php",
+            "Language": "php",
+            "Index": 0
+          }
+        ]
+      },
+      {
+        "Content": "const x = 1 ; \n const x = 1 ; \n x . x ( x ) ; \n",
+        "Language": "javascript",
+        "Instances": [
+          {
+            "Path": "%PROJECT_PATH%/_testdata/javascript/bar.js",
+            "Language": "javascript",
+            "Index": 0
+          },
+          {
+            "Path": "%PROJECT_PATH%/_testdata/javascript/foo.js",
+            "Language": "javascript",
+            "Index": 0
+          }
+        ]
+      }
+    ]
   }
 ]
