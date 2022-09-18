@@ -21,35 +21,22 @@ const (
 )
 
 func Analyze(out io.Writer, configPath string) int {
-	if _, err := os.Stat(configPath); errors.Is(err, os.ErrNotExist) {
-		fmt.Fprintf(out, "could not find config file '%s'\n", configPath)
+	configuration, err := readConfig(configPath)
+	if err != nil {
+		fmt.Println(out, err)
 
 		return CommandFailure
 	}
 
-	cwd, err := os.Getwd()
+	logFile, err := os.OpenFile(configuration.Settings.LogPath, os.O_RDWR|os.O_CREATE, 0666)
 	if err != nil {
-		fmt.Fprintln(out, err)
+		fmt.Fprintf(out, "error opening log file: %v", err)
 
 		return CommandFailure
 	}
+	defer logFile.Close()
 
-	absoluteConfigPath := convertConfigPathToAbsolutePath(configPath, cwd)
-	err, configuration := config.ParseConfig(absoluteConfigPath, cwd)
-
-	if err != nil {
-		fmt.Fprintf(out, "error while parsing config under '%s'", absoluteConfigPath)
-
-		return CommandFailure
-	}
-
-	f, err := os.OpenFile(configuration.Settings.LogPath, os.O_RDWR|os.O_CREATE, 0666)
-	if err != nil {
-		log.Fatalf("error opening file: %v", err)
-	}
-	defer f.Close()
-
-	log.SetOutput(f)
+	log.SetOutput(logFile)
 	log.SetFlags(log.Lshortfile)
 
 	var levelNormalizers = make(map[int][]config.Normalizer)
@@ -105,26 +92,41 @@ func Analyze(out io.Writer, configPath string) int {
 	cloneBundles := aggregate.AggregateCloneBundles(clones)
 
 	for _, report := range configuration.Reports {
+		var err error
+
 		if report.Type == "json" {
-			err := reporter.WriteJsonReport(cloneBundles, report)
-
-			if err != nil {
-				fmt.Fprintln(out, err)
-
-				return CommandFailure
-			}
+			err = reporter.WriteJsonReport(cloneBundles, report)
 		} else if report.Type == "html" {
-			err := reporter.WriteHtmlReport(cloneBundles, report)
+			err = reporter.WriteHtmlReport(cloneBundles, report)
+		}
+		if err != nil {
+			fmt.Fprintln(out, err)
 
-			if err != nil {
-				fmt.Fprintln(out, err)
-
-				return CommandFailure
-			}
+			return CommandFailure
 		}
 	}
 
 	return CommandSuccess
+}
+
+func readConfig(configPath string) (*config.Config, error) {
+	if _, err := os.Stat(configPath); errors.Is(err, os.ErrNotExist) {
+		return nil, fmt.Errorf("could not find config file '%s'", configPath)
+	}
+
+	cwd, err := os.Getwd()
+	if err != nil {
+		return nil, err
+	}
+
+	absoluteConfigPath := convertConfigPathToAbsolutePath(configPath, cwd)
+	err, configuration := config.ParseConfig(absoluteConfigPath, cwd)
+
+	if err != nil {
+		return nil, fmt.Errorf("error while parsing config under '%s'", absoluteConfigPath)
+	}
+
+	return configuration, nil
 }
 
 func convertConfigPathToAbsolutePath(configPath string, cwd string) string {
