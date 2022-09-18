@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 	"path"
+	"sort"
 	"strings"
 	"x-dry-go/src/internal/clone_detect"
 	"x-dry-go/src/internal/compare"
@@ -91,6 +92,8 @@ func Analyze(out io.Writer, configPath string) int {
 
 	cloneBundles := aggregate.AggregateCloneBundles(clones)
 
+	cloneBundles = normalizeCloneBundles(cloneBundles)
+
 	for _, report := range configuration.Reports {
 		var err error
 
@@ -107,6 +110,19 @@ func Analyze(out io.Writer, configPath string) int {
 	}
 
 	return CommandSuccess
+}
+
+func normalizeCloneBundles(cloneBundles []aggregate.CloneBundle) []aggregate.CloneBundle {
+	for _, bundle := range cloneBundles {
+		sort.Slice(bundle.AggregatedClones, func(i, j int) bool {
+			return len(bundle.AggregatedClones[i].Content) < len(bundle.AggregatedClones[j].Content)
+		})
+	}
+	sort.Slice(cloneBundles, func(i, j int) bool {
+		return cloneBundles[i].CloneType < cloneBundles[j].CloneType
+	})
+
+	return cloneBundles
 }
 
 func readConfig(configPath string) (*config.Config, error) {
