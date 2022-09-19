@@ -9,3 +9,5 @@ _testdata/xdry.log
 xdry-cache_*.json
 /xdry.json
 /xdry.log
+_testdata/cache/*
+!/_testdata/cache/.gitkeep

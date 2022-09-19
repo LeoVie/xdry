@@ -50,7 +50,7 @@ func Analyze(out io.Writer, configPath string) int {
 	typedClones := map[int][]clone_detect.Clone{}
 	for _, directory := range configuration.Directories {
 		for cloneType := 1; cloneType <= 3; cloneType++ {
-			err, clonesInDir := clone_detect.DetectInDirectory(directory, cloneType, levelNormalizers)
+			err, clonesInDir := clone_detect.DetectInDirectory(directory, cloneType, levelNormalizers, *configuration)
 			if err != nil {
 				fmt.Fprintln(out, err)
 
