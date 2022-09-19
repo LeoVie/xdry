@@ -5,6 +5,7 @@ import (
 	"github.com/schollz/progressbar/v3"
 	"log"
 	"os"
+	"path"
 	"path/filepath"
 	"strconv"
 	"sync"
@@ -43,7 +44,12 @@ func (pair filePair) hash() string {
 	return pair.AFile.Path + "_" + pair.BFile.Path
 }
 
-func DetectInDirectory(directory string, cloneType int, levelNormalizers map[int][]config.Normalizer) (error, []Clone) {
+func DetectInDirectory(
+	directory string,
+	cloneType int,
+	levelNormalizers map[int][]config.Normalizer,
+	configuration config.Config,
+) (error, []Clone) {
 	filepaths, err := findFilesInDir(directory)
 	if err != nil {
 		return err, []Clone{}
@@ -53,6 +59,7 @@ func DetectInDirectory(directory string, cloneType int, levelNormalizers map[int
 		cloneTypeToNormalizeLevel(cloneType),
 		levelNormalizers,
 		filepaths,
+		configuration,
 	)
 
 	err, compareFunc := getCompareFuncForLevel(cloneType)
@@ -189,8 +196,10 @@ func normalizeFiles(
 	level int,
 	levelNormalizers map[int][]config.Normalizer,
 	filepaths []string,
+	configuration config.Config,
 ) map[string]structs.File {
-	fileCache, err := cache.InitOrReadCache("xdry-cache_level_" + strconv.Itoa(level) + ".json")
+	cachePath := path.Join(configuration.Settings.CacheDirectory, "xdry-cache_level_"+strconv.Itoa(level)+".json")
+	fileCache, err := cache.InitOrReadCache(cachePath)
 	if err != nil {
 		fmt.Println("Error reading cache")
 	}
