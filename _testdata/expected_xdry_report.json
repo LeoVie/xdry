@@ -192,7 +192,7 @@
     "CloneType": 2,
     "AggregatedClones": [
       {
-        "Content": "$x = 1 ; print ( $x ) ;",
+        "Content": "$x = 1 ; print $x ;",
         "Language": "php",
         "Instances": [
           {
@@ -218,6 +218,27 @@
         ]
       },
       {
+        "Content": "$x = 1 ; $x = 1 ; print $x ;",
+        "Language": "php",
+        "Instances": [
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/bar.php",
+            "Language": "php",
+            "Index": 0
+          },
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/bum.php",
+            "Language": "php",
+            "Index": 0
+          },
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/foo.php",
+            "Language": "php",
+            "Index": 0
+          }
+        ]
+      },
+      {
         "Content": "const x = 1 ; \n x . x ( x ) ; \n",
         "Language": "javascript",
         "Instances": [
@@ -235,27 +256,6 @@
             "Path": "%PROJECT_PATH%/_testdata/javascript/foo.js",
             "Language": "javascript",
             "Index": 16
-          }
-        ]
-      },
-      {
-        "Content": "$x = 1 ; $x = 1 ; print ( $x ) ;",
-        "Language": "php",
-        "Instances": [
-          {
-            "Path": "%PROJECT_PATH%/_testdata/php/bar.php",
-            "Language": "php",
-            "Index": 0
-          },
-          {
-            "Path": "%PROJECT_PATH%/_testdata/php/bum.php",
-            "Language": "php",
-            "Index": 0
-          },
-          {
-            "Path": "%PROJECT_PATH%/_testdata/php/foo.php",
-            "Language": "php",
-            "Index": 0
           }
         ]
       },
@@ -281,7 +281,7 @@
     "CloneType": 3,
     "AggregatedClones": [
       {
-        "Content": "$x = 1 ; print ( $x ) ;",
+        "Content": "$x = 1 ; print $x ;",
         "Language": "php",
         "Instances": [
           {
@@ -307,6 +307,27 @@
         ]
       },
       {
+        "Content": "$x = 1 ; $x = 1 ; print $x ;",
+        "Language": "php",
+        "Instances": [
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/bar.php",
+            "Language": "php",
+            "Index": 0
+          },
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/bum.php",
+            "Language": "php",
+            "Index": 0
+          },
+          {
+            "Path": "%PROJECT_PATH%/_testdata/php/foo.php",
+            "Language": "php",
+            "Index": 0
+          }
+        ]
+      },
+      {
         "Content": "const x = 1 ; \n x . x ( x ) ; \n",
         "Language": "javascript",
         "Instances": [
@@ -324,27 +345,6 @@
             "Path": "%PROJECT_PATH%/_testdata/javascript/foo.js",
             "Language": "javascript",
             "Index": 16
-          }
-        ]
-      },
-      {
-        "Content": "$x = 1 ; $x = 1 ; print ( $x ) ;",
-        "Language": "php",
-        "Instances": [
-          {
-            "Path": "%PROJECT_PATH%/_testdata/php/bar.php",
-            "Language": "php",
-            "Index": 0
-          },
-          {
-            "Path": "%PROJECT_PATH%/_testdata/php/bum.php",
-            "Language": "php",
-            "Index": 0
-          },
-          {
-            "Path": "%PROJECT_PATH%/_testdata/php/foo.php",
-            "Language": "php",
-            "Index": 0
           }
         ]
       },
