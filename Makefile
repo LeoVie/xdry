@@ -22,3 +22,7 @@ endif
 	@echo "Building for all platforms (version ${version})"
 	chmod +x ./multiplatform_build.sh
 	./multiplatform_build.sh ${version}
+
+.PHONY: test
+test:
+	go test -v ./src...
