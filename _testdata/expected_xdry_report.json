@@ -19,33 +19,33 @@
         ]
       },
       {
-        "Content": " ) ;",
+        "Content": ";",
         "Language": "php",
         "Instances": [
           {
             "Path": "%PROJECT_PATH%/_testdata/php/bar.php",
             "Language": "php",
-            "Index": 30
+            "Index": 26
           },
           {
             "Path": "%PROJECT_PATH%/_testdata/php/bla.php",
             "Language": "php",
-            "Index": 20
+            "Index": 17
           },
           {
             "Path": "%PROJECT_PATH%/_testdata/php/bum.php",
             "Language": "php",
-            "Index": 31
+            "Index": 27
           },
           {
             "Path": "%PROJECT_PATH%/_testdata/php/foo.php",
             "Language": "php",
-            "Index": 30
+            "Index": 26
           }
         ]
       },
       {
-        "Content": " ; $",
+        "Content": "; $",
         "Language": "php",
         "Instances": [
           {
@@ -87,13 +87,13 @@
         ]
       },
       {
-        "Content": " = 50 ; print ( $",
+        "Content": " = 50; print $",
         "Language": "php",
         "Instances": [
           {
             "Path": "%PROJECT_PATH%/_testdata/php/bar.php",
             "Language": "php",
-            "Index": 12
+            "Index": 11
           },
           {
             "Path": "%PROJECT_PATH%/_testdata/php/bla.php",
@@ -103,23 +103,23 @@
           {
             "Path": "%PROJECT_PATH%/_testdata/php/bum.php",
             "Language": "php",
-            "Index": 13
+            "Index": 12
           },
           {
             "Path": "%PROJECT_PATH%/_testdata/php/foo.php",
             "Language": "php",
-            "Index": 12
+            "Index": 11
           }
         ]
       },
       {
-        "Content": "$y = 50 ; print ( $y ) ;",
+        "Content": "$y = 50; print $y;",
         "Language": "php",
         "Instances": [
           {
             "Path": "%PROJECT_PATH%/_testdata/php/bar.php",
             "Language": "php",
-            "Index": 10
+            "Index": 9
           },
           {
             "Path": "%PROJECT_PATH%/_testdata/php/bla.php",
@@ -129,12 +129,12 @@
           {
             "Path": "%PROJECT_PATH%/_testdata/php/foo.php",
             "Language": "php",
-            "Index": 10
+            "Index": 9
           }
         ]
       },
       {
-        "Content": "$x = 10 ; $y = 50 ; print ( $y ) ;",
+        "Content": "$x = 10; $y = 50; print $y;",
         "Language": "php",
         "Instances": [
           {
@@ -192,13 +192,13 @@
     "CloneType": 2,
     "AggregatedClones": [
       {
-        "Content": "$x = 1 ; print $x ;",
+        "Content": "$x = 1; print $x;",
         "Language": "php",
         "Instances": [
           {
             "Path": "%PROJECT_PATH%/_testdata/php/bar.php",
             "Language": "php",
-            "Index": 9
+            "Index": 8
           },
           {
             "Path": "%PROJECT_PATH%/_testdata/php/bla.php",
@@ -208,17 +208,17 @@
           {
             "Path": "%PROJECT_PATH%/_testdata/php/bum.php",
             "Language": "php",
-            "Index": 9
+            "Index": 8
           },
           {
             "Path": "%PROJECT_PATH%/_testdata/php/foo.php",
             "Language": "php",
-            "Index": 9
+            "Index": 8
           }
         ]
       },
       {
-        "Content": "$x = 1 ; $x = 1 ; print $x ;",
+        "Content": "$x = 1; $x = 1; print $x;",
         "Language": "php",
         "Instances": [
           {
@@ -281,13 +281,13 @@
     "CloneType": 3,
     "AggregatedClones": [
       {
-        "Content": "$x = 1 ; print $x ;",
+        "Content": "$x = 1; print $x;",
         "Language": "php",
         "Instances": [
           {
             "Path": "%PROJECT_PATH%/_testdata/php/bar.php",
             "Language": "php",
-            "Index": 9
+            "Index": 8
           },
           {
             "Path": "%PROJECT_PATH%/_testdata/php/bla.php",
@@ -297,17 +297,17 @@
           {
             "Path": "%PROJECT_PATH%/_testdata/php/bum.php",
             "Language": "php",
-            "Index": 9
+            "Index": 8
           },
           {
             "Path": "%PROJECT_PATH%/_testdata/php/foo.php",
             "Language": "php",
-            "Index": 9
+            "Index": 8
           }
         ]
       },
       {
-        "Content": "$x = 1 ; $x = 1 ; print $x ;",
+        "Content": "$x = 1; $x = 1; print $x;",
         "Language": "php",
         "Instances": [
           {
