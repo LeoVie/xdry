@@ -32,7 +32,7 @@
         "--rm",
         "-v",
         "%FILEPATH%:/file.php",
-        "leovie/xdry-php-plugin:0.2.1",
+        "leovie/xdry-php-plugin:0.3.1",
         "normalize:level-1",
         "/file.php"
       ]
@@ -47,7 +47,7 @@
         "--rm",
         "-v",
         "%FILEPATH%:/file.php",
-        "leovie/xdry-php-plugin:0.2.1",
+        "leovie/xdry-php-plugin:0.3.1",
         "normalize:level-2",
         "/file.php"
       ]
