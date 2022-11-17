@@ -23,6 +23,10 @@ endif
 	chmod +x ./multiplatform_build.sh
 	./multiplatform_build.sh ${version}
 
+.PHONY: development_build
+development_build:
+	cd src/cmd && go build -o xdry -ldflags "-X main.version=development_build"
+
 .PHONY: test
 test:
 	go test -v ./src...
